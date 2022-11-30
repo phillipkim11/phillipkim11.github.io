@@ -1,0 +1,856 @@
+Rk,School,State,Players,Active Players,Hall of Famers,Pro Bowl Selections,Games Played,Touchdowns,Highest Career Approximate Value,Approximate Value
+1,Notre Dame,IN,623,44,14,189,29539,1929,Alan Page,144
+2,USC,CA,549,29,14,238,28964,1891,Bruce Matthews,138
+3,Ohio St.,OH,526,59,8,183,26365,1846,Paul Warfield,108
+4,None,,478,3,0,18,6758,352,Otis Sistrunk,53
+5,Michigan,MI,444,45,9,113,21212,1352,Tom Brady,184
+6,Penn St.,PA,427,43,6,120,22873,1353,Jack Ham,113
+7,Alabama,AL,420,71,8,128,20228,1358,John Hannah,112
+8,LSU,LA,413,59,6,135,21348,1713,Kevin Mawae,108
+9,Oklahoma,OK,410,42,3,100,17770,1291,Adrian Peterson,101
+10,Nebraska,NE,398,24,5,89,19398,881,Will Shields,113
+11,Georgia,GA,395,56,5,122,18905,1430,Fran Tarkenton,148
+12,Miami (FL),FL,390,30,9,181,21905,1924,Ray Lewis,160
+13,Florida,FL,387,49,2,88,19131,1488,Emmitt Smith,129
+14,Tennessee,TN,372,27,3,144,20231,1295,Peyton Manning,176
+15,UCLA,CA,364,29,6,104,19591,1012,Jimmy Johnson,103
+16,Texas,TX,361,34,4,120,18570,1044,Steve McMichael,100
+17,Pittsburgh,PA,360,23,10,125,16048,1050,Dan Marino,145
+18,Wisconsin,WI,360,29,4,87,16018,961,Russell Wilson,125
+19,Michigan St.,MI,350,18,3,112,15953,1086,Herb Adderley,106
+20,Texas A&M,TX,349,32,1,108,17366,957,Richmond Webb,102
+21,Washington,WA,337,35,3,73,16373,737,Warren Moon,116
+22,Florida St.,FL,332,27,5,100,17932,1098,Derrick Brooks,142
+23,Auburn,AL,330,28,2,70,16855,964,Cam Newton,115
+24,Iowa,IA,325,38,5,90,14496,713,Paul Krause,119
+25,Illinois,IL,311,17,5,60,14401,853,Ray Nitschke,95
+26,Arizona St.,AZ,309,17,5,98,15283,1081,Randall McDaniel,129
+27,Stanford,CA,302,32,4,82,14417,1129,John Elway,140
+28,Purdue,IN,301,17,3,108,14214,670,Drew Brees,167
+29,Oregon,OR,284,27,6,86,12976,676,Dan Fouts,123
+30,Arkansas,AR,282,25,3,55,10860,701,Dan Hampton,102
+31,California,CA,282,21,2,111,16138,990,Aaron Rodgers,159
+32,Minnesota,MN,279,16,7,77,10636,559,Carl Eller,132
+33,Clemson,SC,278,37,1,61,13356,894,Brian Dawkins,104
+34,Mississippi,MS,277,21,2,71,11874,729,Eli Manning,121
+35,Syracuse,NY,273,9,7,92,11594,964,Marvin Harrison,123
+36,North Carolina,NC,270,20,2,70,14378,712,Lawrence Taylor,146
+37,Colorado,CO,261,14,1,38,14321,776,Cliff Branch,87
+38,Boston Col.,MA,252,18,2,61,12320,429,Matt Ryan,144
+39,Baylor,TX,250,18,1,61,10056,464,Mike Singletary,124
+40,Maryland,MD,243,18,2,63,11676,593,Randy White,116
+41,Missouri,MO,239,21,2,45,9357,606,Justin Smith,101
+42,Mississippi St.,MS,233,23,0,38,9406,303,Kent Hull,88
+43,West Virginia,WV,228,17,2,43,9570,564,Chuck Howley,94
+44,Oklahoma St.,OK,226,24,2,56,8866,628,Barry Sanders,120
+45,Indiana,IN,224,10,1,40,8422,505,Trent Green,94
+46,San Diego St.,CA,223,10,1,40,10197,669,Marshall Faulk,132
+47,South Carolina,SC,223,28,0,40,9619,717,John Abraham,91
+48,TCU,TX,214,24,3,48,8105,529,LaDainian Tomlinson,129
+49,Utah,UT,213,22,2,46,8235,630,Steve Smith,102
+50,Northwestern,IL,212,13,2,47,7852,414,Chris Hinton,79
+51,Virginia,VA,207,13,2,45,10215,726,Ronde Barber,109
+52,Kentucky,KY,206,19,2,50,9661,397,George Blanda,97
+53,Georgia Tech,GA,204,10,3,47,10027,623,Pat Swilling,98
+54,Washington St.,WA,201,10,3,50,9388,492,Drew Bledsoe,105
+55,Arizona,AZ,200,10,0,26,8728,376,Lance Briggs,98
+56,Kansas St.,KS,199,13,0,20,8317,615,Steve Grogan,91
+57,North Carolina St.,NC,199,24,1,55,9645,622,Philip Rivers,149
+58,Oregon St.,OR,190,19,0,30,8298,511,Chad Johnson,85
+59,Virginia Tech,VA,190,20,1,40,7983,418,Bruce Smith,152
+60,BYU,UT,185,15,1,30,7552,334,Steve Young,132
+61,Houston,TX,185,16,0,17,7613,412,Greg Brezina,63
+62,Louisville,KY,184,11,1,65,8325,503,Johnny Unitas,113
+63,Tulsa,OK,179,4,4,25,6504,398,Steve Largent,103
+64,Cincinnati,OH,174,18,0,17,6512,292,Jason Kelce,86
+65,SMU,TX,173,13,4,73,8310,718,Forrest Gregg,96
+66,Kansas,KS,172,7,3,47,7434,521,John Hadl,106
+67,Texas Tech,TX,172,18,0,28,6553,469,Zach Thomas,115
+68,Wake Forest,NC,154,13,1,25,6210,305,Norm Snead,87
+69,Fresno St.,CA,150,7,0,23,6540,455,Logan Mankins,102
+70,Temple,PA,145,22,0,18,5762,232,Joe Klecko,76
+71,Utah St.,UT,145,14,1,37,6350,271,Merlin Olsen,116
+72,Duke,NC,142,14,3,21,5812,298,Sonny Jurgensen,105
+73,Colorado St.,CO,139,8,1,35,6370,195,Joey Porter,90
+74,Iowa St.,IA,139,6,0,16,5058,265,Matt Blair,74
+75,Memphis,TN,139,14,1,22,6315,345,Isaac Bruce,101
+76,San Jose St.,CA,139,6,0,27,6284,472,Jeff Garcia,89
+77,Rutgers,NJ,138,15,0,15,5298,242,Deron Cherry,78
+78,Vanderbilt,TN,133,14,0,17,5189,189,Jay Cutler,86
+79,Southern Miss,MS,132,8,2,33,6318,252,Brett Favre,158
+80,Tulane,LA,131,12,0,26,5539,463,Richie Petitbon,85
+81,Tennessee St.,TN,121,1,2,20,5391,179,Richard Dent,98
+82,Grambling St.,LA,118,2,4,62,7077,458,Willie Brown,109
+83,Boise St.,ID,104,13,1,18,3864,125,Dave Wilcox,74
+84,Hawaii,HI,102,4,0,9,4993,109,Jesse Sapolu,79
+85,Central Florida,FL,96,18,0,19,3618,346,Daunte Culpepper,86
+86,Texas-El Paso,TX,96,5,1,16,3731,192,Don Maynard,101
+87,Wyoming,WY,96,13,0,12,4190,283,Jim Kiick,62
+88,East Carolina,NC,95,3,0,14,3860,295,Earnest Byner,80
+89,Villanova,PA,95,4,1,16,2805,204,Howie Long,95
+90,Jackson St.,MS,94,0,4,64,5553,646,Walter Payton,127
+91,Marshall,WV,93,5,2,15,3475,319,Randy Moss,124
+92,Rice,TX,93,11,0,23,4158,284,Frank Ryan,77
+93,Louisiana Tech,LA,92,8,3,26,4874,270,Willie Roaf,111
+94,Toledo,OH,91,12,1,14,3046,210,Andy McCollum,63
+95,Nevada,NV,89,4,1,15,3886,211,Charles Mann,79
+96,Miami (OH),OH,88,4,0,4,2541,155,Ben Roethlisberger,131
+97,Idaho,ID,87,4,1,13,3462,54,Wayne Walker,93
+98,UNLV,NV,85,2,0,7,2463,178,Randall Cunningham,110
+99,North Texas,TX,84,5,1,33,3677,294,Joe Greene,109
+100,Southern,LA,81,1,3,32,4146,229,Aeneas Williams,110
+101,Northern Illinois,IL,77,6,0,7,2306,132,Ryan Diem,72
+102,Florida A&M,FL,76,1,1,20,3703,241,Ken Riley,96
+103,Fordham,NY,76,1,1,4,1675,106,Chase Edmonds,17
+104,Holy Cross,MA,76,1,1,24,1965,115,Jon Morris,71
+105,Western Michigan,MI,76,10,0,13,2482,118,Greg Jennings,66
+106,Colgate,NY,73,0,1,14,2132,186,Eugene Robinson,88
+107,New Mexico,NM,73,2,1,20,3287,218,Brian Urlacher,119
+108,Louisiana,LA,71,11,0,9,2820,152,Charles Tillman,66
+109,Marquette,WI,70,0,0,11,1948,120,George Andrie,75
+110,Arkansas St.,AR,68,6,0,12,2664,72,Bill Bergey,87
+111,South Carolina St.,SC,68,7,4,36,3644,160,Deacon Jones,103
+112,Appalachian St.,NC,66,7,0,6,2052,53,Dexter Coakley,65
+113,Texas Southern,TX,66,0,2,26,3283,254,Michael Strahan,122
+114,Troy,AL,66,3,0,10,2037,47,DeMarcus Ware,100
+115,Connecticut,CT,65,8,0,2,2515,99,Byron Jones,38
+116,Pennsylvania,PA,65,4,1,8,1734,89,Chuck Bednarik,27
+117,Montana,MT,64,0,0,5,2783,36,Doug Betters,61
+118,Pacific,CA,62,0,1,26,3208,150,Mike Merriweather,73
+119,South Florida,FL,62,10,0,4,1750,50,Jason Pierre-Paul,71
+120,Detroit Mercy,MI,61,0,0,9,1925,88,Grady Alderman,79
+121,Georgetown (DC),DC,60,0,0,5,1139,54,Dan Ahern,0
+122,Bowling Green,OH,59,2,0,16,2372,114,Doug Smith,69
+123,New Mexico St.,NM,59,2,0,10,2481,98,Charley Johnson,79
+124,Kent St.,OH,58,0,1,27,2875,253,Jack Lambert,111
+125,St. Mary's (CA),CA,58,0,1,11,1500,168,John Henry Johnson,41
+126,Chattanooga,TN,58,5,1,11,2134,223,Terrell Owens,121
+127,William & Mary,VA,58,2,1,16,2589,51,Darren Sharper,89
+128,West Texas A&M,TX,57,0,0,8,2170,138,Jerry Logan,69
+129,Alcorn St.,MS,55,0,0,12,3179,221,Steve McNair,99
+130,Central Michigan,MI,55,11,0,15,2457,144,J.J. Watt,107
+131,Ohio,OH,53,3,0,5,1535,14,Jonathan Goodwin,59
+132,Western Kentucky,KY,53,7,0,2,1291,71,Dale Lindsey,35
+133,Brown,RI,52,1,1,12,1432,87,Steve Jordan,48
+134,Duquesne,PA,52,1,0,3,1539,51,Bruce Gossett,35
+135,Northwestern St.,LA,52,0,1,19,2389,285,Mark Duper,78
+136,La-Monroe,LA,51,2,0,5,2241,189,Stan Humphries,50
+137,North Dakota St.,ND,51,13,0,4,1623,29,Steve Nelson,68
+138,Richmond,VA,51,0,0,4,1889,122,Paris Lenon,48
+139,Texas A&M-Kingsville,TX,51,0,3,30,3480,141,Gene Upshaw,108
+140,Ball St.,IN,50,3,0,7,1533,113,Timmy Brown,66
+141,Buffalo,NY,48,12,0,4,945,36,Khalil Mack,82
+142,East. Michigan,MI,48,3,0,3,2320,44,T.J. Lang,61
+143,Massachusetts,MA,48,7,0,4,1619,93,Greg Landry,80
+144,Illinois St.,IL,47,4,0,0,1219,53,Mike Prior,46
+145,Bucknell,PA,45,1,1,5,1159,133,Tom Mitchell,30
+146,Southern Illinois,IL,45,5,0,12,2158,166,Jim Hart,95
+147,Northern Arizona,AZ,44,1,0,0,1612,90,Michael Haynes,49
+148,Texas St.,TX,44,2,0,2,1620,76,Bob Young,57
+149,Akron,OH,42,1,1,6,1259,40,Jason Taylor,118
+150,Dartmouth,NH,42,1,1,3,1423,51,Reggie Williams,69
+151,Morgan St.,MD,42,0,4,33,2222,283,Leroy Kelly,87
+152,Northern Iowa,IA,42,5,1,8,1961,97,Kurt Warner,96
+153,Western Illinois,IL,42,2,0,13,2257,102,Rodney Harrison,69
+154,Bethune-Cookman,FL,41,0,1,13,1628,66,Larry Little,104
+155,Columbia,NY,41,0,1,7,1145,66,George Starke,58
+156,Dayton,OH,41,1,1,9,1125,34,Bob DeMarco,75
+157,North Carolina A&T,NC,41,3,1,13,1832,89,Elvin Bethea,74
+158,East. Kentucky,KY,40,2,0,5,1765,33,John Jackson,58
+159,Harvard,MA,40,4,0,13,1755,93,Matt Birk,83
+160,Portland St.,OR,40,0,0,2,1213,103,Neil Lomax,70
+161,Santa Clara,CA,40,0,1,24,1950,196,Dan Pastorini,62
+162,Washington & Jefferson,PA,40,0,1,4,820,83,Bill Berrehsem,0
+163,Cornell,NY,39,0,0,4,1395,52,Seth Payne,50
+164,Princeton,NJ,39,2,0,0,897,23,Dennis Norman,17
+165,S.F. Austin,TX,39,1,0,9,1799,86,Jeremiah Trotter,71
+166,Boston Univ.,MA,38,0,0,9,1932,154,Butch Byrd,67
+167,Weber St.,UT,38,3,0,0,1340,9,Bob Pollard,49
+168,Wichita St.,KS,38,0,0,5,1328,27,Miller Farr,65
+169,Abilene Christian,TX,37,0,0,4,1255,172,Wilbert Montgomery,71
+170,Army,NY,37,4,0,9,894,48,Alejandro Villanueva,47
+171,Middle Tennessee St.,TN,37,6,0,2,1992,53,Don Griffin,60
+172,Navy,MD,37,3,2,13,1661,101,Roger Staubach,104
+173,Florida Atlantic,FL,36,11,0,6,1078,61,Ed Newman,77
+174,South Dakota St.,SD,36,3,1,15,1695,107,Jim Langer,90
+175,Hampton,VA,35,0,0,1,966,6,Reggie Doss,45
+176,Long Beach St.,CA,35,0,1,7,1580,144,Terrell Davis,73
+177,McNeese St.,LA,35,0,0,5,1446,48,Tom Sestak,68
+178,Prairie View A&M,TX,35,2,1,29,1860,204,Ken Houston,95
+179,Yale,CT,34,4,0,8,1642,106,Gary Fencik,78
+180,Delaware,DE,33,5,0,6,1670,52,Rich Gannon,97
+181,Montana St.,MT,32,4,1,6,1465,32,Jan Stenerud,54
+182,Sam Houston St.,TX,32,1,0,6,1215,27,Michael Bankston,48
+183,Youngstown St.,OH,32,2,0,2,1115,39,Ron Jaworski,85
+184,Cal Poly-San Luis Obispo,CA,31,0,0,1,1316,45,Bob Howard,52
+185,East. Washington,WA,31,5,0,1,1327,73,Michael Roos,63
+186,Lehigh,PA,31,0,0,0,807,24,John Hill,51
+187,Mississippi Gulf Coast CC,MS,31,4,0,0,1115,26,Ed Khayat,26
+188,East Mississippi CC,MS,30,6,0,3,1165,127,Antowain Smith,48
+189,Northwest Mississippi CC,MS,30,2,1,9,1398,32,Cortez Kennedy,97
+190,San Francisco,CA,30,0,4,33,1577,128,Gino Marchetti,59
+191,North Dakota,ND,29,1,0,2,1007,47,Jim LeClair,56
+192,NYU,NY,29,0,1,0,522,37,Bob Barrabee,0
+193,Ala-Birmingham,AL,28,6,0,4,1053,80,Roddy White,88
+194,Drake,IA,28,1,0,6,1355,55,Karl Kassulke,59
+195,Hardin-Simmons,TX,28,0,2,9,791,56,Mike Mercer,26
+196,Lafayette,PA,28,0,0,0,540,53,Blake Costanzo,7
+197,North Carolina Central,NC,28,1,0,8,1569,38,Doug Wilkerson,87
+198,Alabama St.,AL,27,1,0,0,1208,82,Eddie Robinson,64
+199,Ark-Pine Bluff,AR,27,2,0,12,1812,101,L.C. Greenwood,87
+200,Butler (KS),KS,27,6,0,3,1518,122,DeMarcus Lawrence,49
+201,Eastern Illinois,IL,27,2,0,5,1060,15,Tony Romo,95
+202,Georgia Southern,GA,27,7,0,2,1065,41,Fred Stokes,33
+203,Idaho St.,ID,27,1,0,5,1111,69,Jared Allen,101
+204,James Madison,VA,27,5,1,10,1259,70,Gary Clark,83
+205,Lamar,TX,27,0,0,2,746,10,Wayne Moore,43
+206,Maine,ME,27,2,0,5,1244,21,Mike DeVito,46
+207,Sacramento St.,CA,27,2,0,2,1060,17,Ken O'Brien,73
+208,South Dakota,SD,27,3,0,2,886,22,Ordell Braase,70
+209,Texas A&M-Commerce,TX,27,1,0,8,1361,44,Harvey Martin,82
+210,Chicago,IL,26,0,0,1,352,38,Dunc Annan,0
+211,Miss. Valley St.,MS,26,0,2,22,1520,236,Jerry Rice,160
+212,Air Force,CO,25,1,0,0,834,7,Larry Cole,62
+213,Liberty,VA,25,1,0,4,910,128,James McKnight,33
+214,North Alabama,AL,25,0,0,4,1041,63,Jackrabbit Jenkins,51
+215,Rhode Island,RI,25,1,0,0,344,2,Steve Furness,33
+216,SE Missouri St.,MO,25,3,0,0,1086,7,Ken Iman,61
+217,Central Oklahoma,OK,24,0,0,1,621,21,Keith Traylor,60
+218,Furman,SC,24,1,0,2,868,46,Orlando Ruff,23
+219,Howard,DC,24,1,0,3,1249,13,Antoine Bethea,63
+220,Md-Eastern Shore,MD,24,0,1,21,1945,105,Art Shell,93
+221,Nicholls St.,LA,24,0,0,4,807,63,Mark Carrier,61
+222,Samford,AL,24,5,0,2,706,8,Cortland Finnegan,53
+223,St. Thomas,MN,24,0,1,0,442,11,Jim Gustafson,5
+224,Valdosta St.,GA,24,3,0,6,714,15,Jessie Tuggle,70
+225,Cal State-Fullerton,CA,23,0,0,0,917,25,Mark Collins,56
+226,Florida International,FL,23,3,0,4,503,72,T.Y. Hilton,71
+227,George Washington,DC,23,0,1,5,582,41,Garry Lyle,21
+228,Grand Valley St.,MI,23,1,0,3,995,41,Brandon Carr,53
+229,Jacksonville St.,AL,23,1,0,2,855,19,Eric Davis,67
+230,Murray St.,KY,23,1,0,0,396,24,Quincy Williams,8
+231,New Hampshire,NH,23,0,0,2,1078,17,Corey Graham,33
+232,Texas-Arlington,TX,23,0,0,0,1378,65,Tim McKyer,50
+233,Xavier (OH),OH,23,0,0,3,754,94,Danny Abramowicz,55
+234,Hofstra,NY,22,0,0,1,1248,139,Marques Colston,72
+235,The Citadel,SC,22,3,0,6,1094,95,Stump Mitchell,43
+236,Carnegie Mellon,PA,21,0,0,3,537,56,Don Campbell,0
+237,Central State (OH),OH,21,0,0,7,830,6,Erik Williams,69
+238,Gonzaga,WA,21,0,2,4,688,89,Mike Perko,3
+239,UC Davis,CA,20,1,0,3,883,18,Ken O'Brien,73
+240,Carson-Newman,TN,20,0,0,1,830,22,Todd Collins,32
+241,Norfolk St.,VA,20,2,0,1,839,16,Ken Reaves,52
+242,West Virginia Wesleyan,WV,20,0,1,0,379,54,Chalmer Ault,0
+243,Alabama A&M,AL,19,0,1,10,997,93,John Stallworth,81
+244,Carlisle Indian,PA,19,0,2,0,309,26,Napoleon Barrel,0
+245,Catholic,DC,19,0,0,0,228,1,John Ambrose,0
+246,Central Arkansas,AR,19,3,0,0,568,38,Monte Coleman,41
+247,Centre,KY,19,0,0,0,168,21,Norris Armstrong,0
+248,Coastal Carolina,SC,19,5,0,2,525,68,Josh Norman,43
+249,Haskell Indian,KS,19,0,0,1,228,16,Ted Buffalo,0
+250,Southeastern Louisiana,LA,19,1,0,0,720,18,Billy Andrews,39
+251,St. Louis,MO,19,0,0,0,451,6,Pat Leahy,39
+252,California (PA),PA,18,2,0,1,618,31,Perry Kemp,20
+253,Delaware St.,DE,18,0,0,2,681,78,John Taylor,57
+254,Northern Colorado,CO,18,1,0,5,934,64,Vincent Jackson,77
+255,Catawba,NC,17,0,0,0,296,20,Dave Taylor,32
+256,Indiana St.,IN,17,2,0,2,640,20,Tunch Ilkin,59
+257,Nebraska-Omaha,NE,17,0,0,1,836,84,Marlin Briscoe,42
+258,Northeastern,MA,17,0,0,2,718,34,Sean Jones,68
+259,Western Carolina,NC,17,1,0,4,1445,50,Clyde Simmons,89
+260,Canisius,NY,16,1,0,1,384,35,Russ Burt,0
+261,Case Western Reserve,OH,16,0,0,1,440,24,John Badaczewski,0
+262,Cerritos (CA),CA,16,2,1,13,1394,73,Ron Yary,104
+263,Emporia St.,KS,16,0,0,5,675,43,Leon Lett,38
+264,Indiana (PA),PA,16,0,0,0,541,39,Chris Villarrial,49
+265,Virginia Union,VA,16,0,0,3,661,17,Herbert Scott,68
+266,DePaul,IL,15,0,0,1,302,22,Chuck Apolskis,0
+267,Loyola Marymount,CA,15,0,0,6,491,62,Gene Brito,5
+268,NW Missouri St.,MO,15,1,0,0,288,2,Seth Wand,10
+269,Pittsburg St.,KS,15,0,0,5,919,51,Eldon Danenhauer,37
+270,VMI,VA,15,0,0,9,457,40,Joe Fortunato,71
+271,Winston-Salem St.,NC,15,0,0,2,831,100,Yancey Thigpen,48
+272,Elon,NC,14,1,0,0,258,15,Rich McGeorge,25
+273,Ferris St.,MI,14,5,0,0,302,9,Zach Sieler,11
+274,Fort Valley St.,GA,14,0,1,11,1103,13,Greg Lloyd,88
+275,Los Angeles St.,CA,14,0,0,3,628,19,Walter Johnson,63
+276,Colorado Mesa,CO,14,0,0,1,694,85,Tony Martin,66
+277,Morris Brown,GA,14,0,0,6,1115,55,Tommy Hart,68
+278,Ohio Wesleyan,OH,14,0,0,0,170,10,Keith Rucker,22
+279,Old Dominion,VA,14,7,0,1,301,20,Zach Pascal,18
+280,San Francisco St.,CA,14,0,0,4,712,8,Floyd Peters,53
+281,Tampa,FL,14,0,0,0,854,72,Freddie Solomon,58
+282,Tennessee Tech,TN,14,0,0,1,726,24,Lonnie Warwick,58
+283,Texas-San Antonio,,14,4,0,0,198,2,Marcus Davenport,13
+284,Towson,MD,14,0,0,6,1016,48,Jermon Bushrod,62
+285,Trinity (TX),TX,14,0,0,2,468,17,Marvin Upshaw,37
+286,Tuskegee,AL,14,0,0,0,689,8,Drayton Florence,34
+287,Washington (MO),MO,14,0,1,0,476,34,Shelby Jordan,41
+288,Bishop,TX,13,0,1,6,709,64,Emmitt Thomas,80
+289,Cameron,OK,13,0,0,0,727,17,Mark Cotney,40
+290,Carroll (WI),WI,13,0,0,0,58,1,Walt Ambrose,0
+291,East Tennessee St.,TN,13,0,0,1,574,40,Donnie Abraham,52
+292,Ferrum,VA,13,0,0,5,689,65,Chris Warren,60
+293,Howard Payne,TX,13,0,0,8,801,18,Ken Gray,69
+294,Kentucky St.,KY,13,0,0,0,346,9,Cletidus Hunt,28
+295,Missouri State,MO,13,2,0,0,525,10,Jason Whittle,24
+296,Saginaw Valley St.,MI,13,0,0,0,838,13,Todd Herremans,51
+297,Tarleton St.,TX,13,1,0,0,324,9,Randy Winkler,7
+298,Wayne State (MI),MI,13,1,0,0,457,27,Rick Byas,27
+299,West Alabama,AL,13,2,0,5,528,86,Tyreek Hill,66
+300,West Georgia,GA,13,1,0,0,229,8,Tyrell Adams,7
+301,Bradley,IL,12,0,0,2,601,90,Harry Jacobs,52
+302,Centenary,LA,12,0,1,0,398,11,Conway Baker,0
+303,Denver,CO,12,0,0,1,200,1,Sam Etcheverry,8
+304,Heidelberg,OH,12,0,0,0,404,52,Bill Groman,37
+305,Langston,OK,12,0,0,7,628,104,Chad Johnson,85
+306,Lincoln (MO),MO,12,0,0,10,597,24,Lemar Parrish,95
+307,Millikin,IL,12,0,1,3,455,23,Jeff Query,15
+308,San Diego,CA,12,4,0,0,232,18,Jamal Agnew,16
+309,Southern Connecticut St.,CT,12,0,0,0,425,1,Joe Andruzzi,45
+310,Southern Utah,UT,12,2,0,0,391,4,Len Walterscheid,20
+311,St. Bonaventure,NY,12,0,1,5,382,18,Jack Butler,0
+312,UT Martin,TN,12,0,0,1,503,76,Nat Moore,79
+313,Washburn,KS,12,0,0,0,301,2,Cary Williams,30
+314,West Chester,PA,12,0,0,3,554,21,Lee Woodall,44
+315,Wisconsin–LaCrosse,WI,12,0,0,2,641,34,Tom Newberry,69
+316,Angelo State (TX),TX,11,0,0,1,511,4,Pierce Holt,45
+317,Cal Poly-Pomona,CA,11,0,0,3,701,44,Jim Zorn,76
+318,Cal State-Northridge,CA,11,0,0,0,241,4,Doug Jones,18
+319,Denison,OH,11,0,0,0,155,7,Johnnie Becker,0
+320,DePauw,IN,11,0,0,0,184,22,Dave Finzer,2
+321,Findlay,OH,11,1,0,0,103,2,Harold Jones-Quartey,6
+322,Grove City,PA,11,0,0,0,205,28,R.J. Bowers,1
+323,Hamline,MN,11,0,0,0,283,30,Duane Benson,25
+324,John Carroll,OH,11,0,1,4,617,11,London Fletcher,95
+325,Loyola (IL),IL,11,0,0,0,93,1,Ed Berwick,0
+326,Muhlenberg,PA,11,0,0,0,142,5,Sisto Averno,0
+327,New Mex. Highlands,NM,11,0,0,7,910,108,Charlie Cowan,72
+328,Presbyterian,SC,11,1,0,3,318,17,Justin Bethel,19
+329,Ripon,WI,11,0,0,0,316,30,Dave Smith,18
+330,Snow College (UT),UT,11,2,0,1,746,51,Brett Keisel,58
+331,St. Cloud St.,MN,11,0,0,0,296,4,Mick Luckhurst,21
+332,SW Oklahoma St.,OK,11,0,0,1,184,7,Carl Birdsong,11
+333,Washington & Lee,VA,11,0,0,5,276,9,Walt Michaels,15
+334,Waynesburg,PA,11,0,0,0,288,23,Don Herrmann,31
+335,Ashland,OH,10,1,0,0,361,11,Walt Williams,19
+336,Baldwin-Wallace,OH,10,0,0,0,208,5,Tom Goosby,6
+337,Beloit,WI,10,0,0,0,204,4,Derek Carrier,5
+338,Butler,IN,10,0,0,0,176,21,John Cavosie,0
+339,Creighton,NE,10,0,0,0,142,8,Ed Allen,0
+340,East Central (OK),OK,10,1,0,5,424,15,Mark Gastineau,84
+341,Georgia St.,GA,10,3,0,1,307,14,Albert Wilson,21
+342,Henderson St.,AR,10,0,0,2,629,74,Roy Green,70
+343,Johnson C. Smith,NC,10,0,0,0,300,15,Pettis Norman,23
+344,Missouri Western St.,MO,10,3,0,0,343,3,Greg Zuerlein,25
+345,NE State (OK),OK,10,0,0,3,385,19,Pat Williams,72
+346,Northern Michigan,MI,10,0,0,1,553,6,Len St. Jean,43
+347,Oklahoma City,OK,10,0,0,4,322,78,Ace Gutowsky,0
+348,Phillips,OK,10,0,1,2,388,30,Dick Marsh,0
+349,South Alabama,AL,10,5,0,0,123,15,Gerald Everett,16
+350,St. Ambrose,IA,10,0,0,1,185,12,Frank DeClerk,0
+351,Stony Brook,NY,10,2,0,0,50,4,Will Tye,7
+352,Wabash,IN,10,0,0,0,365,41,Pete Metzelaars,28
+353,Western Maryland,MD,10,0,0,0,136,16,Harry Benson,0
+354,Albany State (GA),GA,9,1,0,0,464,0,Grover Stewart,21
+355,Bethany (WV),WV,9,0,0,0,91,6,Roy Adkins,0
+356,Blinn College (TX),TX,9,1,0,2,492,113,Cam Newton,115
+357,Central Missouri St.,MO,9,0,0,3,379,42,Delanie Walker,39
+358,Charleston (WV),WV,9,2,0,0,207,1,Jimmy Carr,33
+359,Charlotte,NC,9,4,0,0,171,0,Larry Ogunjobi,29
+360,Colorado State-Pueblo,CO,9,3,0,1,460,34,Ryan Jensen,43
+361,Compton CC (CA),CA,9,0,1,5,445,102,John LoVetere,30
+362,C.W. Post,NY,9,0,0,0,70,1,Tom Cassese,2
+363,Delta St.,MS,9,0,0,2,400,10,Jack Gregory,64
+364,Geneva,PA,9,0,1,0,192,7,Kris Griffin,4
+365,Georgia Military,GA,9,1,0,0,423,8,Trent Brown,32
+366,Gustavus Adolphus,MN,9,0,0,0,107,3,Tom Harmon,2
+367,Humboldt St.,CA,9,1,0,0,310,35,Wendell Hayes,39
+368,Independence (KS),KS,9,1,0,0,244,3,Ron Parker,26
+369,Marietta,OH,9,0,0,0,163,3,Gene Carroll,0
+370,Minnesota St.,MN,9,3,0,2,290,62,Adam Thielen,48
+371,Missouri Southern St.,MO,9,0,0,4,624,97,Rod Smith,104
+372,Southwestern (TX),TX,9,0,0,1,148,1,R.W. Hicks,3
+373,St. Mary's (MN),MN,9,0,0,0,79,0,Frank Billock,0
+374,Truman St.,MO,9,0,0,0,509,23,Lenvil Elliott,28
+375,Tufts,MA,9,0,0,0,160,15,Mark Buben,7
+376,Valparaiso,IN,9,0,0,4,438,12,Fuzzy Thurston,51
+377,Virginia St.,VA,9,1,0,5,436,1,Larry Brooks,71
+378,Wayne State (NE),NE,9,0,0,1,332,7,Byron Chamberlain,17
+379,Wisconsin–Whitewater,WI,9,2,0,3,432,4,Joe Panos,27
+380,Wittenberg,OH,9,0,0,0,56,1,Scott Watters,2
+381,American Int.,MA,8,0,0,2,486,3,Joe Scibelli,67
+382,Arkansas Tech,AR,8,0,0,6,231,6,Eddie Meador,89
+383,Austin,TX,8,0,0,3,449,42,Gene Babb,18
+384,Austin Peay St.,TN,8,0,0,0,188,0,Jeff Gooch,18
+385,California Lutheran,CA,8,0,0,0,378,20,Brian Kelley,58
+386,Chowan,NC,8,0,0,0,858,16,George Koonce,50
+387,Davis & Elkins,WV,8,0,0,1,216,9,Red Corzine,0
+388,Elizabeth City St.,NC,8,0,0,0,524,21,Jethro Pugh,72
+389,Franklin & Marshall,PA,8,0,0,0,77,0,Mike Caterbone,0
+390,Illinois Wesleyan,IL,8,0,0,1,197,7,Tony Blazine,0
+391,Kutztown (PA),PA,8,1,1,7,510,129,Andre Reed,98
+392,Lawrence,WI,8,0,0,0,143,22,Myrt Basing,0
+393,Lenoir-Rhyne,NC,8,2,0,0,142,7,Don Testerman,15
+394,Mississippi Col.,MS,8,0,0,1,416,9,Larry Evans,33
+395,Monmouth,NJ,8,0,0,2,303,57,Miles Austin,38
+396,Morehead St.,KY,8,0,0,2,308,17,Phil Simms,91
+397,Morningside,IA,8,0,0,0,60,5,Herb McMath,7
+398,Mount Union,OH,8,0,0,0,238,53,Pierre Garcon,54
+399,NE Oklahoma A&M,OK,8,0,0,5,457,96,Ernest Givins,64
+400,Niagara,NY,8,0,0,0,96,3,Art Deremer,0
+401,NW Oklahoma St.,OK,8,0,0,2,437,40,Chip Myers,35
+402,Ouachita Baptist,AR,8,0,1,7,305,4,Cliff Harris,80
+403,Salem,WV,8,0,0,0,153,6,Orson Mobley,8
+404,St. Francis (PA),PA,8,0,0,0,94,7,Tony Bova,0
+405,St. John's (NY),NY,8,0,0,0,211,20,Dennis Bligen,4
+406,Augustana (SD),SD,7,1,0,8,705,34,Karl Mecklenburg,93
+407,UC Santa Barbara,CA,7,0,0,3,250,43,Johnny Morris,54
+408,College of the Canyons (CA),CA,7,2,0,3,669,28,Jason Pierre-Paul,71
+409,Davidson,NC,7,1,0,0,270,0,Kevin Donnalley,52
+410,East. New Mexico,NM,7,0,0,4,295,4,Michael Sinclair,57
+411,Hillsdale,MI,7,0,0,5,436,16,Jared Veldheer,45
+412,Iowa Western,IA,7,4,0,0,55,1,Isaiah Johnson,3
+413,Lackawanna,PA,7,4,0,1,383,5,Bryant McKinnie,64
+414,Midwestern St.,TX,7,0,0,1,427,37,Dominic Rhodes,36
+415,Montclair St.,NJ,7,0,1,5,222,4,Sam Mills,102
+416,Occidental,CA,7,0,0,7,322,47,Jack Kemp,70
+417,Savannah St.,GA,7,0,1,8,296,72,Shannon Sharpe,82
+418,Schreiner College,TX,7,0,1,7,431,81,Charley Johnson,79
+419,Shepherd,WV,7,0,0,0,170,34,Wayne Wilson,33
+420,Southern Arkansas,AR,7,1,0,0,324,4,Jordan Babineaux,26
+421,U.S. International,CA,7,0,0,0,284,17,Vernon Dean,35
+422,Western Ontario,,7,0,0,0,103,0,Vaughn Martin,12
+423,Widener,PA,7,0,0,5,456,40,Joe Fields,81
+424,Albany (NY),NY,6,0,0,0,38,0,Jarren Williams,1
+425,Azusa Pacific,CA,6,2,0,2,201,42,Christian Okoye,34
+426,Bloomsburg,PA,6,1,0,5,439,28,Jahri Evans,114
+427,UC Riverside,CA,6,0,0,0,459,35,Russ Bolinger,32
+428,Cal State-Chico,CA,6,0,0,0,175,11,Doug Dressler,17
+429,Chadron St.,NE,6,0,0,0,270,57,Danny Woodhead,38
+430,Clark (GA),GA,6,0,0,0,301,19,Elijah Nevett,11
+431,Concordia-Moorhead (MN),MN,6,0,0,3,501,4,Gary Larsen,72
+432,Dubuque,IA,6,1,0,0,97,19,John Armstrong,0
+433,Fort Hays St.,KS,6,1,0,0,290,6,Les Miller,33
+434,Iowa Central,IA,6,0,0,0,401,5,Ron Hallstrom,50
+435,Lane,TN,6,0,0,0,187,41,Jacoby Jones,30
+436,Laney,CA,6,1,0,1,236,32,C.J. Anderson,26
+437,Lebanon Valley,PA,6,0,0,0,234,34,Ken Longenecker,2
+438,Linfield,OR,6,0,0,0,115,1,Randy Marshall,4
+439,Loras,IA,6,0,0,0,57,1,Tommy Cronin,0
+440,Minnesota-Duluth,MN,6,0,0,0,177,23,Ted McKnight,21
+441,Nebraska-Kearney,NE,6,1,0,0,238,2,Randy Rasmussen,68
+442,Newberry,SC,6,0,0,0,227,4,Ron Parker,26
+443,Otterbein,OH,6,0,0,0,60,0,Bob Agler,0
+444,Regina,SK,6,2,0,1,471,4,Akiem Hicks,52
+445,Scranton,PA,6,0,0,0,69,4,Ed Eiden,0
+446,Slippery Rock,PA,6,0,0,0,151,3,Brandon Fusco,35
+447,Springfield,MA,6,0,0,0,42,1,Jack Peavey,1
+448,St. Vincent,PA,6,0,0,0,64,0,Vern Foltz,0
+449,Trinity (CT),CT,6,0,0,0,130,0,Roger LeClerc,12
+450,Vermont,VT,6,0,0,0,47,1,Leo Douglass,0
+451,Wagner,NY,6,4,0,0,200,5,Julian Stanford,12
+452,Williams,MA,6,0,0,0,204,15,Scott Perry,15
+453,Wisconsin–Milwaukee,WI,6,0,0,1,282,15,Mike Reinfeldt,43
+454,Wisconsin–Platteville,WI,6,1,0,0,101,11,Dan Arnold,9
+455,Wisconsin–Superior,WI,6,0,0,0,222,6,Doug Sutherland,51
+456,Wooster,OH,6,0,0,0,146,2,Blake Moore,12
+457,Adams St.,CO,5,0,0,0,221,0,Don Cockroft,54
+458,Albright,PA,5,0,0,1,101,14,Knuckles Boyle,0
+459,Amherst,MA,5,0,0,1,341,49,Freddie Scott,41
+460,Arkansas–Monticello,AR,5,0,0,0,96,2,Mike Nichols,10
+461,Benedictine,KS,5,0,0,0,180,16,Jamie Mueller,8
+462,Bowie St.,MD,5,0,0,0,96,7,Isaac Redman,10
+463,British Columbia,BC,5,1,0,0,26,0,Bill Crawford,2
+464,Calgary,AB,5,1,0,0,33,0,Daniel Federkeil,5
+465,Carthage,WI,5,0,0,0,125,10,Jim Jodat,8
+466,Clarion,PA,5,0,0,2,444,1,Alex Sandusky,47
+467,East Stroudsburg,PA,5,0,0,0,160,0,Mike Reichenbach,33
+468,Fayetteville St.,NC,5,1,0,0,36,1,Blenda Gay,11
+469,Gardner-Webb,NC,5,0,0,0,254,45,Derrick Fenner,30
+470,Gettysburg,PA,5,0,0,0,48,0,Dave Yohn,6
+471,Hobart,NY,5,0,0,1,127,1,Ali Marpet,43
+472,Lombard,IL,5,0,0,0,89,9,Swede Hummel,0
+473,Macalester,MN,5,0,0,0,91,0,Lee Nystrom,1
+474,Manchester,IN,5,0,0,0,24,0,Herb Banet,0
+475,Manhattan,NY,5,0,0,0,46,1,Frank Damiani,0
+476,McMurry,TX,5,0,0,0,174,4,Ernie Park,18
+477,Michigan Tech,MI,5,0,0,0,302,0,Joe Berger,37
+478,Morehouse,GA,5,0,0,0,100,0,Kalvin Pearson,7
+479,Muskingum,OH,5,0,0,0,138,7,Roger LaLonde,8
+480,New Haven,CT,5,0,0,0,126,0,Harry Boatswain,15
+481,New Mex. Mil. Inst.,,5,0,1,6,177,20,Roger Staubach,104
+482,Ohio Northern,OH,5,0,0,0,196,2,Jason Trusnik,18
+483,Pasadena CC,CA,5,0,0,5,261,70,Anthony Miller,74
+484,Pepperdine,CA,5,0,0,0,130,1,Gerry Perry,13
+485,Providence,RI,5,0,0,1,124,12,Chuck Avedisian,0
+486,Rochester,NY,5,0,0,0,32,2,Ben Forsyth,0
+487,Shippensburg,PA,5,0,0,7,516,32,Brent Grimes,55
+488,Stillman,,5,0,0,0,215,0,Sammie Lee Hill,21
+489,Saint John's (MN),MN,5,1,1,0,212,48,John McDowell,8
+490,Swarthmore,PA,5,0,0,0,41,5,Les Asplundh,0
+491,Trinity Valley CC (TX),TX,5,1,0,0,196,21,James Scott,36
+492,Ursinus,PA,5,0,0,0,50,0,Reds Bassman,0
+493,Wesley,,5,0,0,0,45,0,Mark Meseroll,4
+494,West Virginia St.,WV,5,0,0,0,60,1,Warren Anderson,0
+495,Western Washington,WA,5,0,0,1,398,2,Michael Koenen,11
+496,Whittier,CA,5,0,0,1,110,0,Chuck McMurtry,30
+497,Wiley,TX,5,0,0,0,184,0,Mike Lewis,47
+498,Wisconsin–Oshkosh,WI,5,0,0,0,42,0,Pahl Davis,0
+499,Allen,SC,4,0,0,0,252,0,Sam Davis,50
+500,Bakersfield JC,CA,4,0,1,8,171,79,Frank Gifford,27
+501,Central Washington,WA,4,0,0,2,357,16,James Hasty,81
+502,Cisco (TX),TX,4,1,0,0,126,9,James Dixon,5
+503,Dodge City (KS),KS,4,0,0,11,271,64,Larry Brown,81
+504,Evansville,IN,4,0,0,0,92,4,Marty Amsler,16
+505,Fisk,TN,4,0,0,3,201,3,Robert James,49
+506,Fort Lewis,CO,4,0,0,0,108,16,Herman Heard,24
+507,Franklin (IN),IN,4,0,0,0,41,1,Paul Franklin,0
+508,Frostburg St.,MD,4,0,0,0,40,1,Bob Maddox,7
+509,Garden City (KS),KS,4,1,0,0,63,1,Lonnie Johnson,8
+510,Highland (KS),KS,4,3,0,0,23,0,Robert Jones,1
+511,Hutchinson (KS),KS,4,3,0,4,104,68,Alvin Kamara,59
+512,Kalamazoo,MI,4,0,0,0,43,4,John Cameron,0
+513,Lake Forest,IL,4,0,0,0,22,0,John Biolo,0
+514,Lindenwood,,4,1,0,0,163,2,Pierre Desir,17
+515,Loyola (LA),LA,4,1,0,4,248,4,Richie Petitbon,85
+516,Mars Hill,NC,4,1,0,0,80,0,Denzelle Good,21
+517,Mercer,GA,4,0,0,0,89,2,Wesley Duke,0
+518,Millersville,PA,4,0,0,0,113,28,Robb Riddick,17
+519,Missouri S&T,MO,4,1,0,0,73,0,Tershawn Wharton,4
+520,Mount San Antonio JC,CA,4,1,0,0,185,6,Alfonso Boone,23
+521,Nebraska Wesleyan,NE,4,0,1,0,210,27,Shawn Bouwens,21
+522,Norwich,VT,4,0,0,0,86,25,Jim Luscinski,1
+523,Oregon Tech,,4,0,0,0,244,17,Joe Cain,37
+524,Portland,OR,4,0,0,0,58,1,Emmett Barrett,0
+525,Redlands,CA,4,0,0,0,167,3,John Houser,11
+526,Robert Morris,PA,4,0,0,0,165,0,Hank Fraley,48
+527,Sioux Falls,SD,4,2,0,1,390,1,Brian Hansen,24
+528,St. Lawrence,NY,4,0,0,4,270,6,Dave Jennings,28
+529,St. Norbert,WI,4,0,0,0,184,2,Ted Fritsch,19
+530,St. Olaf,MN,4,0,0,0,109,14,Bill Winter,13
+531,Western St. (CO),CO,4,1,0,0,242,50,Austin Ekeler,38
+532,Willamette,OR,4,0,0,1,159,0,Bruce Anderson,18
+533,Wilmington,,4,0,0,0,59,3,Elliott Bonowitz,0
+534,Wisconsin–Stevens Point,WI,4,1,0,0,229,35,Clint Kriewaldt,10
+535,Wofford,SC,4,0,0,0,68,5,Brenton Bersin,3
+536,Yankton,SD,4,0,0,2,233,2,Lyle Alzado,85
+537,Alfred,NY,3,0,0,0,39,4,Les Goble,0
+538,Allegheny,PA,3,0,0,0,23,0,Ronnie Anderson,0
+539,Assumption,MA,3,2,0,1,123,6,Deonte Harty,8
+540,Augsburg,MN,3,0,0,3,195,0,Steve Nelson,68
+541,Baker,KS,3,0,0,0,141,6,Tanner Purdum,6
+542,Bemidji St.,MN,3,1,0,0,60,3,Gunner Olszewski,2
+543,Birmingham-Southern,AL,3,0,0,0,10,0,Hermit Davis,0
+544,Butte JC (CA),CA,3,1,1,14,482,34,Aaron Rodgers,159
+545,Cal State-Hayward,CA,3,0,0,0,15,0,Greg Blankenship,6
+546,Carleton,MN,3,0,0,0,98,1,Bill Fleckenstein,0
+547,Cheyney,PA,3,0,0,1,329,2,James Williams,56
+548,Christian Brothers (MO),TN,3,0,0,0,32,4,Charlie Essman,0
+549,Dickinson,PA,3,0,0,0,103,3,Bull Behman,0
+550,Evangel (MO),MO,3,0,0,0,19,3,Derrick Clark,2
+551,Fairmont St.,WV,3,0,0,0,37,0,Don Overton,1
+552,Hampden-Sydney,VA,3,0,0,0,79,2,Tom Miller,0
+553,Harding,AR,3,0,0,0,46,0,Torrance Daniels,1
+554,Hastings,NE,3,0,0,0,95,10,Jerry Drake,8
+555,Illinois Tech,,3,0,0,0,32,0,Joe Carey,0
+556,Knox,,3,0,0,0,96,25,Bob Prout,2
+557,Los Angeles Valley,CA,3,0,0,0,69,0,Charlie Kendall,4
+558,Livingstone,NC,3,0,0,5,177,50,Ben Coates,43
+559,Luther,,3,0,0,0,9,0,Cliff Hansen,0
+560,Manitoba,MB,3,1,0,0,282,1,Israel Idonije,34
+561,Marist,NY,3,1,0,1,158,0,Jason Myers,19
+562,Mary Hardin-Baylor,TX,3,0,0,0,70,2,Jerrell Freeman,34
+563,McGill,,3,0,0,0,201,0,Laurent Duvernay-Tardif,28
+564,Menlo,CA,3,0,0,0,57,2,Nate Jackson,2
+565,Merchant Marine,,3,0,0,0,112,8,Joe Rizzo,33
+566,Middlebury,VT,3,0,0,0,180,0,Stephen Hauschka,27
+567,Millsaps,MS,3,0,0,0,122,0,Ed Khayat,26
+568,Missouri Valley,MO,3,0,0,1,101,1,Ron Hall,45
+569,Modesto JC,CA,3,0,1,13,307,5,Gino Marchetti,59
+570,Monmouth (IL),IL,3,0,0,0,215,10,Jug Earp,0
+571,Northwood,MI,3,0,0,0,94,0,Chris Wilson,6
+572,Northern State Univ.,SD,3,0,0,0,63,9,D.J. Hackett,14
+573,Ottawa (KS),KS,3,0,0,0,125,16,Derrick Ward,25
+574,Pacific Lutheran,WA,3,0,0,0,87,0,John Zamberlin,13
+575,Parsons,IA,3,0,0,0,68,0,Mike Hennigan,14
+576,Randolph-Macon,VA,3,0,0,0,78,4,Howard Stevens,3
+577,Rhodes,TN,3,0,0,0,132,13,Tom Mullady,9
+578,Riverside CC,CA,3,1,0,1,78,1,J.C. Jackson,25
+579,SE Oklahoma St.,OK,3,0,0,0,27,1,Earnest Hunter,2
+580,Simon Fraser,BC,3,0,0,0,21,0,Doug Brown,4
+581,Southern Oregon,OR,3,1,0,1,77,0,Aldrick Rosas,8
+582,St. Edward's,TX,3,0,0,0,17,0,John Polisky,0
+583,St. Joseph's (IN),IN,3,0,0,4,187,5,Blaine Bishop,57
+584,St. Joseph's (PA),PA,3,0,0,0,64,0,John Cole,0
+585,St. Mary's (TX),TX,3,0,0,0,67,6,Charlie Huneke,0
+586,Sul Ross St.,TX,3,0,0,0,98,4,Johnny Hatley,6
+587,Southwest Mississippi CC,MS,3,1,0,1,193,2,Glover Quin,51
+588,Thiel,PA,3,0,0,0,17,1,Floyd Christman,0
+589,Tiffin,OH,3,1,0,1,270,78,Nate Washington,48
+590,Tusculum,TN,3,1,0,0,47,0,Ricardo Colclough,2
+591,Upsala,NJ,3,0,0,0,9,0,Jim Apple,0
+592,Western Oregon,OR,3,0,0,0,144,45,Tyrell Williams,25
+593,West Liberty St.,WV,3,0,0,0,282,11,Mark Murphy,52
+594,Westminster (PA),PA,3,0,0,0,20,0,Lowell Lander,0
+595,West Virginia Tech,WV,3,0,0,0,25,0,Chuck Banks,3
+596,Wheaton,IL,3,0,0,0,103,1,Andy Studebaker,11
+597,William Jewell,,3,0,0,0,33,0,Scoop Gillespie,0
+598,William Penn,IA,3,0,0,0,279,2,Damon Harrison,54
+599,Wisconsin–Eau Claire,WI,3,0,0,0,21,0,Roman Brumm,0
+600,Wisconsin–Stout,WI,3,0,0,0,60,0,Tony Beckham,5
+601,University of Alberta,,2,0,0,0,4,0,Brian Fryer,0
+602,Albion,MI,2,0,0,0,5,0,Joe Felton,1
+603,Anderson (IN),IN,2,0,0,0,10,0,Brad Lamb,2
+604,Arnold,CT,2,0,1,7,223,5,Andy Robustelli,50
+605,Augustana (IL),IL,2,0,0,4,194,20,Ken Anderson,120
+606,Bates,ME,2,0,1,0,51,12,Rico Corsetti,0
+607,Bliss,,2,0,0,0,20,0,Frank Glassman,0
+608,Bridgeport,,2,0,0,0,67,5,Nick Giaquinto,10
+609,Brockport St.,NY,2,0,0,0,11,0,Josh Warner,1
+610,Brooklyn,NY,2,0,0,0,61,4,Waddy MacPhee,0
+611,Campion,,2,0,0,0,8,0,Clarke Fischer,0
+612,Carroll (MT),MT,2,0,0,0,102,6,Casey Fitzsimmons,6
+613,CCNY,NY,2,0,0,0,7,0,Willie Halpern,0
+614,City College of San Francisco,CA,2,0,1,6,159,76,O.J. Simpson,98
+615,Central College (IA),IA,2,0,0,0,167,1,Vern Den Herder,68
+616,Central Connecticut St.,CT,2,0,0,0,31,0,Joe Costello,3
+617,Chapman,CA,2,0,0,0,3,0,Matt George,0
+618,Charleston Southern,SC,2,0,0,0,34,0,Charles James,3
+619,Coe College,IA,2,0,0,0,123,39,Fred Jackson,48
+620,Col. of Emporia,KS,2,0,0,0,5,0,Lem Harkey,0
+621,Col. of the Sequoias,CA,2,0,0,0,59,0,Henry Allison,16
+622,Colorado Col.,CO,2,0,1,0,93,42,Ed Smith,4
+623,Colorado Mines,CO,2,0,0,0,11,3,Jack Colahan,0
+624,Concordia (QB),QC,2,0,0,0,83,0,Cory Greenwood,3
+625,Concordia-St.Paul (MN),MN,2,0,0,0,27,0,Zach Moore,3
+626,Cortland St.,,2,0,0,0,41,0,R-Kal Truluck,3
+627,Culver-Stockton,MO,2,0,0,0,37,0,Bob Hendren,0
+628,Cumberlands,,2,0,0,0,3,0,Wendall Williams,1
+629,Defiance,OH,2,0,0,0,250,3,Ben Davis,41
+630,Delaware Valley,PA,2,0,0,0,87,0,Bill Cottrell,16
+631,Diablo Valley College,CA,2,0,0,0,130,0,John Gesek,39
+632,Doane,NE,2,0,0,0,74,0,Kevin Hunt,16
+633,East. Montana,,2,0,0,0,5,0,Rick Duncan,0
+634,Edinboro,PA,2,0,0,0,48,0,Jim Romaniszyn,9
+635,El Camino Col. (CA),,2,0,0,0,46,2,Jim Allison,6
+636,Elmhurst,IL,2,0,0,0,49,5,Steve Finch,1
+637,Fullerton JC,CA,2,0,0,0,78,18,Howie Livingston,0
+638,Georgetown (KY),KY,2,0,0,0,117,0,Bruce McNorton,37
+639,Graceland College (IA),,2,0,0,0,183,0,Jeff Criswell,54
+640,Grinnell,IA,2,0,0,0,105,23,Ben Douglas,0
+641,Guilford,,2,0,0,0,8,1,Art Faircloth,0
+642,Hiram,,2,0,0,0,50,1,Jimmie Kennedy,1
+643,Holmes (MS),MS,2,0,1,9,183,0,Walter Jones,98
+644,Houston Baptist,TX,2,2,0,0,19,0,Caleb Johnson,1
+645,Indianapolis,,2,0,0,0,12,0,Dick Nyers,0
+646,Itawamba (MS),MS,2,0,0,4,164,58,Joe Horn,70
+647,Jacksonville,FL,2,0,0,0,56,1,Andy Jones,1
+648,Jamestown,ND,2,0,0,0,4,0,J.J. Syvrud,0
+649,Kenyon,OH,2,0,0,0,12,0,Jimmy Baxter,0
+650,Knoxville,TN,2,0,0,0,261,0,Grady Jackson,49
+651,Lakeland,WI,2,0,0,0,190,6,Pat Curran,13
+652,Lambuth,TN,2,0,0,0,40,4,Ron Dixon,6
+653,La Salle,PA,2,0,0,0,53,0,Mike Mandarino,0
+654,Limestone,SC,2,1,0,0,29,2,Vyncint Smith,3
+655,Lock Haven,PA,2,0,0,0,3,0,Bret Shugarts,1
+656,Long Beach CC,CA,2,0,0,0,66,6,Charles Jordan,7
+657,Long Island,NY,2,0,0,0,21,0,Bernie Kapitansky,0
+658,Marian,IN,2,0,0,0,15,0,Brandon Dillon,0
+659,Mercyhurst,PA,2,0,0,0,65,6,Matthew Hatchette,9
+660,Milton,,2,0,0,3,225,13,Dave Krieg,97
+661,Minnesota-Crookston,,2,0,0,1,47,0,Ira Haaven,0
+662,Minot St.,ND,2,0,0,0,38,0,Terry Falcon,9
+663,Montana Tech,MT,2,0,0,0,3,0,Don Heater,0
+664,Montreal,QC,2,0,0,0,5,0,David Foucault,1
+665,Moorhead State (MN),,2,0,0,0,5,0,Ted Nemzek,0
+666,Mount St. Mary's,MD,2,0,0,0,20,1,Fritz Ferko,0
+667,Navarro,TX,2,1,0,0,98,0,J'Marcus Webb,29
+668,Northeast Mississippi CC,MS,2,1,0,0,25,0,Daniel Ross,2
+669,New York Tech,,2,0,0,0,3,0,Chris Brown,0
+670,North Central,IL,2,0,0,0,57,0,Levert Carr,15
+671,Oglethorpe,GA,2,0,0,0,22,0,Ted Fulton,0
+672,Oklahoma Baptist,OK,2,0,0,0,14,0,Clark Craig,0
+673,Olivet,,2,0,0,0,16,0,George Pyne,4
+674,Pacific (OR),,2,0,0,0,236,0,Dick Daniels,18
+675,Palomar (CA),CA,2,0,0,1,148,0,Tom Dempsey,27
+676,Peru St.,NE,2,0,0,0,138,3,Joel Williams,56
+677,Puget Sound,WA,2,0,0,0,41,1,Mike Oliphant,2
+678,Queens (Canada),,2,0,0,0,68,0,Mike Schad,26
+679,Rose Hulman Tech,,2,0,0,0,5,0,Joe Engelhard,0
+680,Rowan,NJ,2,0,0,0,79,2,Dino Hall,2
+681,Santa Monica College (CA),CA,2,0,0,0,50,6,Ralph Anderson,7
+682,Saskatchewan,,2,0,0,0,5,0,Joe Kraker,0
+683,Schuylkill,PA,2,0,0,0,14,0,Ralph Barkman,0
+684,Shaw,NC,2,0,0,0,48,2,Van Green,14
+685,Sherman Indian,,2,0,0,0,17,0,Reggie Attache,0
+686,Simpson,,2,0,0,1,117,29,Ken Mercer,0
+687,Sonoma St.,CA,2,0,1,11,213,0,Larry Allen,101
+688,Southwestern (KS),KS,2,0,0,0,6,0,Vic Baltzell,0
+689,St. Anselm,NH,2,0,0,2,85,30,Ray McLean,0
+690,St. Augustine's,NC,2,0,0,1,144,0,Ike Lassiter,51
+691,Stetson,,2,1,0,0,57,6,Donald Payne,5
+692,St. Mary's (Canada),,2,0,0,0,23,0,Ken Clark,2
+693,St. Mary's (KS),KS,2,0,0,0,12,0,Lew Lane,0
+694,St. Viator,IL,2,0,0,0,13,3,Vince McCarthy,0
+695,Tarkio,MO,2,0,0,0,110,0,Al Reynolds,32
+696,Tennessee Wesleyan,TN,2,0,0,0,29,0,Aaron Grant,0
+697,Union (NY),NY,2,0,0,0,10,0,Fred Brumm,0
+698,Union (TN),TN,2,0,0,0,19,0,Jim Jones,0
+699,Upper Iowa,IA,2,0,0,0,113,0,Mike Eischeid,17
+700,West Los Angeles College,CA,2,0,1,12,375,88,Warren Moon,116
+701,Westminster (MO),MO,2,0,0,0,47,2,Jim Eliopulos,3
+702,Whitworth,WA,2,0,0,0,30,0,Paul Ward,7
+703,Wingate,NC,2,0,0,0,64,0,David Jones,6
+704,Acadia (Canada),,1,0,0,0,100,15,Jerome Pathon,29
+705,Allentown College,,1,0,0,0,3,1,Jamie Kurisko,0
+706,Alma,MI,1,0,0,0,19,0,Mark Konecny,1
+707,American College of Physical Education,,1,0,0,0,50,3,Lenny Sachs,0
+708,Anahuac (Mexico),,1,0,0,0,12,0,Sergio Albert,0
+709,Antelope Valley JC,CA,1,0,0,0,6,0,Larrye Weaver,0
+710,Apprentice,VA,1,0,0,0,23,0,Ernie Williamson,0
+711,Augusta State (GA),GA,1,0,0,0,38,0,Danny Kight,0
+712,Aurora,IL,1,0,0,0,116,25,Don Beebe,33
+713,Austria Technical,,1,0,0,2,82,0,Toni Linhart,14
+714,Belgrade,,1,0,0,0,7,0,Momcilo Gavric,0
+715,Belhaven,MS,1,0,0,0,118,1,Tramaine Brock,21
+716,Bentley College,MA,1,0,0,0,111,0,Mackenzy Bernadeau,25
+717,Berry,GA,1,1,0,0,1,0,Mason Kinsey,0
+718,Bethany (KS),KS,1,0,0,0,77,0,Milt Rehnquist,0
+719,Black Hills St.,SD,1,0,0,0,6,0,Zac Alcorn,0
+720,Bluffton,OH,1,0,0,1,103,39,Elbert Dubenion,50
+721,Brandeis,MA,1,0,0,0,2,0,Mike Long,0
+722,Bryant,RI,1,1,0,0,14,0,Tom Kennedy,1
+723,Buena Vista,IA,1,0,0,1,115,25,Jim Doran,7
+724,UC Irvine,CA,1,0,0,0,111,21,Darren Fells,12
+725,California Western,CA,1,0,0,0,7,0,Jesse Murdock,0
+726,Cal State-Bakersfield,CA,1,0,0,0,86,0,Steve Neal,43
+727,Central Florida CC,FL,1,0,0,0,99,2,Clinton Hart,23
+728,Clarkson,NY,1,0,0,0,1,0,Bill Bucher,0
+729,Clinch Valley,VA,1,0,0,0,2,0,Shonn Bell,0
+730,Coast Guard,CT,1,0,0,1,70,0,Curt Knight,11
+731,Col. of Idaho,ID,1,0,0,0,90,23,R.C. Owens,21
+732,Concordia (IL),IL,1,0,0,0,1,0,Todd Black,0
+733,Concordia (NE),NE,1,0,0,0,3,0,Cleve Wester,1
+734,Concordia (WI),WI,1,0,0,0,3,0,John Scardina,2
+735,Contra Costa JC,CA,1,0,0,0,2,0,L.C. Joyner,1
+736,Cornell Col.,IA,1,0,0,0,26,0,Lee Wilson,0
+737,Corpus Christi,TX,1,0,0,0,2,0,Jesse Stokes,1
+738,Dakota Wesleyan,SD,1,0,0,0,21,1,Paul Sheeks,0
+739,Dana,NE,1,0,0,0,2,0,Lawrence White,0
+740,Deakin (Australia),,1,0,0,0,99,0,Ben Graham,13
+741,Detroit Tech,,1,0,0,0,7,0,Michael Kostiuk,0
+742,Drexel,PA,1,0,0,0,9,2,Jim Ostendarp,0
+743,DuPage (IL),,1,0,0,0,117,0,Paul Spicer,36
+744,Earlham,IN,1,0,0,0,5,0,John Beasley,0
+745,East. Oregon,,1,0,0,0,2,0,Jace Billingsley,0
+746,Edward Waters,FL,1,0,0,1,97,17,Cannonball Butler,32
+747,Flagler,FL,1,0,0,1,143,0,Scott Player,17
+748,Florida Tech,FL,1,0,0,0,7,0,J.T. Hassell,0
+749,Fort Scott (KS),KS,1,1,0,1,153,3,Lavonte David,78
+750,Frederick College,VA,1,0,0,0,16,0,Wade Traynham,3
+751,General Motors Institute,,1,0,0,0,5,0,Vince Lensing,0
+752,Geneseo St.,,1,0,0,0,3,0,Jim Leonard,0
+753,George Fox,OR,1,0,0,0,33,0,Aaron Elling,2
+754,Greenville,IL,1,1,0,0,66,0,Nicholas Morrow,14
+755,Grossmont College (CA),,1,0,0,0,5,0,Evan Arapostathis,0
+756,Hibbing CC (MN),,1,0,0,0,9,0,Joseph Chrape,0
+757,Holy Cross (IN),IN,1,0,0,0,5,0,Tony Brooks,0
+758,Illinois Benedictine,,1,0,0,0,1,0,Rob DeVita,0
+759,Incarnate Word,TX,1,0,0,0,11,0,Cole Wick,0
+760,Iona,NY,1,0,0,0,3,0,Laz Chavez,0
+761,Iowa Wesleyan,IA,1,0,0,0,36,0,Sandy Sandberg,0
+762,ITESM Monterey,,1,0,0,0,1,0,Rolando Cantu,0
+763,Ithaca,NY,1,0,0,0,5,0,Joe D'Orazio,0
+764,King Alfred's (England),,1,0,0,1,116,0,John Smith,27
+765,Kentucky Wesleyan,KY,1,1,0,0,81,14,Keelan Cole,19
+766,Laval,QC,1,0,0,0,56,1,Antony Auclair,0
+767,La Verne,CA,1,0,0,0,2,0,Joaquin Zendejas,0
+768,Lewis & Clark,,1,0,0,0,36,0,Jon Jaqua,7
+769,Lincoln Col.,IL,1,0,0,0,1,0,Ray MacMurray,0
+770,Los Angeles CC,CA,1,0,0,1,96,1,Don Bishop,34
+771,Louisiana College,LA,1,0,0,0,23,0,Jeremy Vujnovich,7
+772,Loyola (MD),MD,1,0,0,0,20,0,Marne Intrieri,0
+773,MacMurray,IL,1,0,0,1,235,0,Olindo Mare,34
+774,Malone,OH,1,1,0,0,48,3,Ashton Dulin,3
+775,Marion Military Institute,,1,0,0,0,24,2,Bernard Ford,1
+776,McKendree University,IL,1,0,0,0,2,0,Matt Cole,0
+777,McPherson,KS,1,0,0,0,4,0,Jack Vetter,0
+778,Metro State,CO,1,0,0,0,5,0,Hayden Smith,0
+779,MidAmerica Nazarene University,KS,1,0,0,0,32,0,Ken Jolly,6
+780,Miles,AL,1,0,0,0,1,0,Ed McCall,0
+781,Miramonte JC,,1,0,0,0,48,21,Mickey Colmer,0
+782,Mississippi Delta CC,MS,1,0,0,0,109,1,Juran Bolden,14
+783,Moorpark College,CA,1,1,0,0,4,1,Jack Jones,0
+784,Moraine Valley CC (IL),IL,1,0,0,0,2,0,Dave Bruno,0
+785,Moravian,PA,1,0,0,0,9,2,Jack Finn,0
+786,Mount Senario,,1,0,0,0,3,0,Craig Jay,0
+787,NE Illinois,IL,1,0,0,0,3,0,Ron Daugherty,0
+788,Newport (Wales),,1,0,0,0,4,0,Allan Watson,0
+789,Northland (WI),WI,1,0,0,0,2,0,Paul Feldhausen,1
+790,North Central University,MN,1,0,0,0,26,1,Fritz Roeseler,0
+791,North Dakota-Ellendale,,1,0,0,5,132,47,Pete Retzlaff,59
+792,North Greenville,SC,1,0,0,0,26,1,Freddie Martino,2
+793,North Park,IL,1,0,0,0,11,0,Paul Zaeske,0
+794,Northern Virginia CC,VA,1,0,0,0,92,0,John Leypoldt,18
+795,NW (IA),IA,1,0,0,0,24,0,Kelvin Korver,10
+796,Oberlin,OH,1,0,0,0,4,4,Herb Henderson,0
+797,Ohio Dominican,OH,1,0,0,0,3,0,Dom Albanese,0
+798,Panhandle State (OK),OK,1,0,0,0,47,0,Frank Beede,8
+799,Park,,1,0,0,0,32,0,Ken Jolly,6
+800,Paul Quinn,TX,1,0,0,0,20,0,Walter Napier,10
+801,Philander Smith,AR,1,0,0,0,134,35,Elijah Pitts,28
+802,Phoenix College (JC),,1,0,0,1,47,11,Andy Livingston,18
+803,Pierce College (CA),,1,0,0,0,110,1,Jimmy Allen,37
+804,Pittsburgh-Johnstown,,1,0,0,1,68,0,Carlton Haselrig,22
+805,Plymouth St.,NH,1,0,0,0,2,2,Joe Dudek,2
+806,Pretoria,,1,0,0,0,5,0,Daniel Adongo,0
+807,Principia,IL,1,0,0,0,3,0,John Butler,0
+808,College of the Redwoods,CA,1,0,0,0,6,0,Dave Harper,0
+809,Regis,CO,1,0,1,1,129,7,Arnie Herber,0
+810,Rider,NJ,1,0,0,0,8,0,Les Maynard,0
+811,Rocky Mountain,MT,1,0,0,0,28,1,Chris Horn,4
+812,Rose St.,,1,0,0,0,15,0,Tony Woods,2
+813,Rensselaer Polytechnic Institute,NY,1,0,0,0,32,0,Andrew Franks,5
+814,Rust,MS,1,0,0,0,16,0,Bob Hughes,3
+815,Rutgers-Camden,NJ,1,0,0,2,186,0,Joe Fields,81
+816,Sacred Heart,CT,1,0,0,0,43,0,Jon Corto,5
+817,Salisbury,MD,1,0,0,0,46,0,Byron Westbrook,3
+818,San Diego City Coll,,1,0,0,0,4,0,Ernie Smith,0
+819,Santa Rosa JC,CA,1,0,0,0,1,0,Larry Steele,0
+820,Seattle,WA,1,0,0,0,65,2,Ron Howard,10
+821,Seton Hall,NJ,1,0,0,0,37,1,Joe Repko,0
+822,Sherbrooke,QC,1,0,0,0,1,0,Sam Giguere,0
+823,Shorter University,GA,1,0,0,0,12,0,Armond Smith,0
+824,Spring Hill,AL,1,0,0,0,7,0,Ed McEvoy,0
+825,St. Bernard,AL,1,0,0,0,110,0,Neil O'Donoghue,12
+826,Sterling,KS,1,0,0,0,11,0,Ed Hiemstra,0
+827,St. Francis Xavier (NS),NS,1,0,0,0,13,0,Henoc Muamba,1
+828,St. Leo,FL,1,0,0,0,3,0,Sankar Montoute,2
+829,St. Paul's,VA,1,0,0,0,88,3,Greg Toler,21
+830,Tabor,KS,1,0,0,1,118,2,Rolland Lawrence,64
+831,Taft,,1,0,0,0,19,0,Steve Alvers,0
+832,Taylor,IN,1,0,0,0,3,1,Wade Russell,0
+833,Toronto,,1,0,0,0,6,0,Dean Dorsey,0
+834,Trinity (IL),IL,1,0,0,0,114,0,Karl Hankton,1
+835,Tyler JC,TX,1,0,0,0,20,0,Charley Quilter,0
+836,Union (KY),KY,1,0,0,0,12,0,Armond Smith,0
+837,Univ. of the South,TN,1,0,0,0,6,0,Fred Benners,0
+838,Urbana,,1,0,0,0,9,0,Filip Filipovic,1
+839,Valencia CC (FL),FL,1,0,0,0,1,0,Anthony Bright,0
+840,Virginia Commonwealth,VA,1,1,0,0,62,10,Mo Alie-Cox,9
+841,Ventura College,CA,1,1,0,0,4,1,Jaylen Watson,0
+842,Wake Technical CC,,1,0,0,2,126,1,Eric Swann,44
+843,Walla Walla CC (WA),WA,1,0,0,1,174,21,Mike Sellers,7
+844,Washington (MD),,1,0,0,0,10,0,Ed Keenan,0
+845,Webber International,FL,1,0,0,0,3,0,Vince Anderson,0
+846,Wesleyan,,1,0,0,0,13,0,Jeff Wilner,0
+847,West Florida,FL,1,1,0,0,4,0,D'Anthony Bell,0
+848,Westminster (UT),UT,1,0,0,0,12,0,Walt Love,0
+849,Western Montana,,1,0,0,0,71,0,Barry Darrow,26
+850,Western Nebraska CC,,1,0,1,7,157,8,Night Train Lane,55
+851,Western New Mexico,NM,1,0,0,0,27,1,Richard Angulo,2
+852,William Paterson,NJ,1,0,0,0,3,0,Derrick Foster,0
+853,Winona St.,MN,1,0,0,0,4,0,Jim Althoff,2
+854,Wisconsin–River Falls,WI,1,0,1,0,137,48,Johnny Blood,0
+855,Worcester St.,MA,1,0,0,0,5,0,Bob Haas,0

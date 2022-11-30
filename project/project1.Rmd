@@ -1,0 +1,5627 @@
+---
+title: "Success from NCAA to NFL"
+output: github_document
+date: "2022-10-18"
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE,  
+                      warning = FALSE, message = FALSE, 
+                      fig.align = "center",
+                      R.options = list(max.print=100))
+```
+
+## Introduction
+
+College football excites hundreds of thousands of people across America year by year, and many collegiate players dream of playing professionally in the NFL. Only a small percentage (1.6%) of college-level players fulfill that dream and get drafted into the NFL. Within this extremely selective process, certain universities and their respective conferences produce more NFL-bound athletes than others. However, does draft success equate to professional success? We are looking to investigate which NCAA conference produces the most successful players in the NFL.
+
+Our final dataset will be composed of 258 individual datasets. Our first dataset (<https://www.pro-football-reference.com/schools/>) lists 847 different colleges/universities in America based on how many of their players have gone on to play in the NFL. The dataset also lists the number of current active professional players, number of Hall of Famers, number of Pro Bowl selections, total NFL games played amongst alumni, total touchdowns scored by alumni, and the alumnus with the highest career Approximate Value. Each unique row represents an individual school, and the dataset contains both numeric and categorical variables. Our second dataset (<https://collegefootballdata.com/exporter/teams/fbs>) lists every school that has an intercollegiate football program, and also lists each school's conference. In this dataset, a unique row also represents an individual school, and only categorical variables are present. Our third dataset (<https://www.pro-football-reference.com/leaders/career_av_career.htm>) lists the top 255 NFL players of all time based on their weighted Approximate Value, which is a measure of the player's impact on the team based on performance and longevity. The dataset also lists the years of a player's career, as well as the number of different teams a player played for. In this dataset, a row represents an individual NFL player, and both numeric and categorical variables are present.
+
+The remaining 255 datasets (links to each player in <https://www.pro-football-reference.com/leaders/career_av_career.htm>) list yearly statistics for each player's career. The datasets list various statistics like age, team, position, number, games played, and Approximate Value, along with various position-specific statistics. Each unique row represents a year of a player's career, and the datasets contain both numeric and categorical variables.
+
+Based on these datasets, we may expect to see a positive correlation between a conference's average weighted Approximate Value and the number of professional players it has produced.
+
+```{r setup, include=FALSE}
+# Load packages and import datasets for setup
+options(repos = list(CRAN="http://cran.rstudio.com/"))
+install.packages("tidyverse")
+library(tidyverse)
+library(ggplot2)
+library(readr)
+college_stats <- read_csv("college_stats.csv")
+ncaa_schools <- read_csv("ncaa_schools.csv")
+wAV_leaders <- read_csv("wAV_leaders.csv")
+aaron_donald <- read_csv("aaron_donald.csv")
+aaron_rodgers <- read_csv("aaron_rodgers.csv")
+adrian_peterson <- read_csv("adrian_peterson.csv")
+aeneas_williams <- read_csv("aeneas_williams.csv")
+alan_faneca <- read_csv("alan_faneca.csv")
+alan_page <- read_csv("alan_page.csv")
+alex_karras <- read_csv("alex_karras.csv")
+alex_smith <- read_csv("alex_smith.csv")
+andre_johnson <- read_csv("andre_johnson.csv")
+andre_reed <- read_csv("andre_reed.csv")
+andrew_whitworth <- read_csv("andrew_whitworth.csv")
+anthony_munoz <- read_csv("anthony_munoz.csv")
+antonio_brown <- read_csv("antonio_brown.csv")
+antonio_gates <- read_csv("antonio_gates.csv")
+art_shell <- read_csv("art_shell.csv")
+barry_sanders <- read_csv("barry_sanders.csv")
+bart_starr <- read_csv("bart_starr.csv")
+ben_roethlisberger <- read_csv("ben_roethlisberger.csv")
+bob_griese <- read_csv("bob_griese.csv")
+bob_lilly <- read_csv("bob_lilly.csv")
+bobby_bell <- read_csv("bobby_bell.csv")
+bobby_boyd <- read_csv("bobby_boyd.csv")
+bobby_wagner <- read_csv("bobby_wagner.csv")
+boomer_esiason <- read_csv("boomer_esiason.csv")
+brett_favre <- read_csv("brett_favre.csv")
+brian_dawkins <- read_csv("brian_dawkins.csv")
+brian_urlacher <- read_csv("brian_urlacher.csv")
+bruce_matthews <- read_csv("bruce_matthews.csv")
+bruce_smith <- read_csv("bruce_smith.csv")
+buck_buchanan <- read_csv("buck_buchanan.csv")
+calais_campbell <- read_csv("calais_campbell.csv")
+cam_newton <- read_csv("cam_newton.csv")
+cameron_jordan <- read_csv("cameron_jordan.csv")
+carl_eller <- read_csv("carl_eller.csv")
+carson_palmer <- read_csv("carson_palmer.csv")
+champ_bailey <- read_csv("champ_bailey.csv")
+charles_woodson <- read_csv("charles_woodson.csv")
+charley_taylor <- read_csv("charley_taylor.csv")
+charlie_joiner <- read_csv("charlie_joiner.csv")
+chris_doleman <- read_csv("chris_doleman.csv")
+chris_hanburger <- read_csv("chris_hanburger.csv")
+chuck_howley <- read_csv("chuck_howley.csv")
+clay_matthews <- read_csv("clay_matthews.csv")
+cornelius_bennett <- read_csv("cornelius_bennett.csv")
+cornell_green <- read_csv("cornell_green.csv")
+cortez_kennedy <- read_csv("cortez_kennedy.csv")
+cris_carter <- read_csv("cris_carter.csv")
+curtis_martin <- read_csv("curtis_martin.csv")
+dan_fouts <- read_csv("dan_fouts.csv")
+dan_hampton <- read_csv("dan_hampton.csv")
+dan_marino <- read_csv("dan_marino.csv")
+darrell_green <- read_csv("darrell_green.csv")
+darrelle_revis <- read_csv("darrelle_revis.csv")
+dave_krieg <- read_csv("dave_krieg.csv")
+deacon_jones <- read_csv("deacon_jones.csv")
+deion_sanders <- read_csv("deion_sanders.csv")
+demarcus_ware <- read_csv("demarcus_ware.csv")
+dermontti_dawson <- read_csv("dermontti_dawson.csv")
+derrick_brooks <- read_csv("derrick_brooks.csv")
+derrick_thomas <- read_csv("derrick_thomas.csv")
+dick_schafrath <- read_csv("dick_schafrath.csv")
+don_maynard <- read_csv("don_maynard.csv")
+donnie_shell <- read_csv("donnie_shell.csv")
+donovan_mcnabb <- read_csv("donovan_mcnabb.csv")
+drew_bledsoe <- read_csv("drew_bledsoe.csv")
+drew_brees <- read_csv("drew_brees.csv")
+ed_reed <- read_csv("ed_reed.csv")
+edgerrin_james <- read_csv("edgerrin_james.csv")
+eli_manning <- read_csv("eli_manning.csv")
+emmitt_smith <- read_csv("emmitt_smith.csv")
+eric_allen <- read_csv("eric_allen.csv")
+eric_dickerson <- read_csv("eric_dickerson.csv")
+forrest_gregg <- read_csv("forrest_gregg.csv")
+fran_tarkenton <- read_csv("fran_tarkenton.csv")
+franco_harris <- read_csv("franco_harris.csv")
+frank_gore <- read_csv("frank_gore.csv")
+gary_zimmerman <- read_csv("gary_zimmerman.csv")
+gene_upshaw <- read_csv("gene_upshaw.csv")
+george_blanda <- read_csv("george_blanda.csv")
+haloti_ngata <- read_csv("haloti_ngata.csv")
+hardy_nickerson <- read_csv("hardy_nickerson.csv")
+harold_jackson <- read_csv("harold_jackson.csv")
+harry_carson <- read_csv("harry_carson.csv")
+henry_ellard <- read_csv("henry_ellard.csv")
+henry_jordan <- read_csv("henry_jordan.csv")
+herb_adderley <- read_csv("herb_adderley.csv")
+howie_long <- read_csv("howie_long.csv")
+isaac_bruce <- read_csv("isaac_bruce.csv")
+isiah_robertson <- read_csv("isiah_robertson.csv")
+jack_ham <- read_csv("jack_ham.csv")
+jack_lambert <- read_csv("jack_lambert.csv")
+jack_youngblood <- read_csv("jack_youngblood.csv")
+jahri_evans <- read_csv("jahri_evans.csv")
+james_farrior <- read_csv("james_farrior.csv")
+james_harrison <- read_csv("james_harrison.csv")
+james_lofton <- read_csv("james_lofton.csv")
+jared_allen <- read_csv("jared_allen.csv")
+jason_peters <- read_csv("jason_peters.csv")
+jason_taylor <- read_csv("jason_taylor.csv")
+jeff_saturday <- read_csv("jeff_saturday.csv")
+jerry_rice <- read_csv("jerry_rice.csv")
+jim_brown <- read_csv("jim_brown.csv")
+jim_hart <- read_csv("jim_hart.csv")
+jim_kelly <- read_csv("jim_kelly.csv")
+jim_marshall <- read_csv("jim_marshall.csv")
+jim_otto <- read_csv("jim_otto.csv")
+jim_tyrer <- read_csv("jim_tyrer.csv")
+jimmy_johnson <- read_csv("jimmy_johnson.csv")
+jimmy_smith <- read_csv("jimmy_smith.csv")
+jj_watt <- read_csv("jj_watt.csv")
+joe_flacco <- read_csv("joe_flacco.csv")
+joe_greene <- read_csv("joe_greene.csv")
+joe_montana <- read_csv("joe_montana.csv")
+joe_namath <- read_csv("joe_namath.csv")
+john_abraham <- read_csv("john_abraham.csv")
+john_brodie <- read_csv("john_brodie.csv")
+john_elway <- read_csv("john_elway.csv")
+john_hadl <- read_csv("john_hadl.csv")
+john_hannah <- read_csv("john_hannah.csv")
+john_randle <- read_csv("john_randle.csv")
+johnny_robinson <- read_csv("johnny_robinson.csv")
+johnny_unitas <- read_csv("johnny_unitas.csv")
+jonathan_ogden <- read_csv("jonathan_ogden.csv")
+julio_jones <- read_csv("julio_jones.csv")
+julius_peppers <- read_csv("julius_peppers.csv")
+junior_seau <- read_csv("junior_seau.csv")
+justin_smith <- read_csv("justin_smith.csv")
+karl_mecklenburg <- read_csv("karl_mecklenburg.csv")
+ken_anderson <- read_csv("ken_anderson.csv")
+ken_houston <- read_csv("ken_houston.csv")
+ken_riley <- read_csv("ken_riley.csv")
+ken_stabler <- read_csv("ken_stabler.csv")
+kevin_greene <- read_csv("kevin_greene.csv")
+kevin_mawae <- read_csv("kevin_mawae.csv")
+kevin_williams <- read_csv("kevin_williams.csv")
+kurt_warner <- read_csv("kurt_warner.csv")
+ladainian_tomlinson <- read_csv("ladainian_tomlinson.csv")
+lance_alworth <- read_csv("lance_alworth.csv")
+lance_briggs <- read_csv("lance_briggs.csv")
+larry_allen <- read_csv("larry_allen.csv")
+larry_fitzgerald <- read_csv("larry_fitzgerald.csv")
+larry_grantham <- read_csv("larry_grantham.csv")
+larry_little <- read_csv("larry_little.csv")
+larry_wilson <- read_csv("larry_wilson.csv")
+lawrence_taylor <- read_csv("lawrence_taylor.csv")
+lem_barney <- read_csv("lem_barney.csv")
+lemar_parrish <- read_csv("lemar_parrish.csv")
+len_dawson <- read_csv("len_dawson.csv")
+logan_mankins <- read_csv("logan_mankins.csv")
+lomas_brown <- read_csv("lomas_brown.csv")
+london_fletcher <- read_csv("london_fletcher.csv")
+luke_kuechly <- read_csv("luke_kuechly.csv")
+marcus_allen <- read_csv("marcus_allen.csv")
+mark_brunell <- read_csv("mark_brunell.csv")
+marshal_yanda <- read_csv("marshal_yanda.csv")
+marshall_faulk <- read_csv("marshall_faulk.csv")
+marvin_harrison <- read.csv("marvin_harrison.csv")
+matt_ryan <- read_csv("matt_ryan.csv")
+matthew_stafford <- read_csv("matthew_stafford.csv")
+mel_blount <- read_csv("mel_blount.csv")
+mel_renfro <- read_csv("mel_renfro.csv")
+merlin_olsen <- read_csv("merlin_olsen.csv")
+michael_irvin <- read_csv("michael_irvin.csv")
+michael_strahan <- read_csv("michael_strahan.csv")
+michael_vick <- read_csv("michael_vick.csv")
+mick_tingelhoff <- read_csv("mick_tingelhoff.csv")
+mike_haynes <- read_csv("mike_haynes.csv")
+mike_kenn <- read_csv("mike_kenn.csv")
+mike_munchak <- read_csv("mike_munchak.csv")
+mike_singletary <- read_csv("mike_singletary.csv")
+mike_webster <- read_csv("mike_webster.csv")
+ndamukong_suh <- read_csv("ndamukong_suh.csv")
+neil_smith <- read_csv("neil_smith.csv")
+nick_buoniconti <- read_csv("nick_buoniconti.csv")
+oj_simpson <- read_csv("oj_simpson.csv")
+orlando_pace <- read_csv("orlando_pace.csv")
+pat_swilling <- read_csv("pat_swilling.csv")
+patrick_peterson <- read_csv("patrick_peterson.csv")
+patrick_willis <- read_csv("patrick_willis.csv")
+paul_krause <- read_csv("paul_krause.csv")
+paul_warfield <- read_csv("paul_warfield.csv")
+peyton_manning <- read_csv("peyton_manning.csv")
+phil_simms <- read_csv("phil_simms.csv")
+philip_rivers <- read_csv("philip_rivers.csv")
+randall_cunningham <- read_csv("randall_cunningham.csv")
+randall_mcdaniel <- read_csv("randall_mcdaniel.csv")
+randy_moss <- read_csv("randy_moss.csv")
+randy_white <- read_csv("randy_white.csv")
+ray_lewis <- read_csv("ray_lewis.csv")
+ray_nitschke <- read_csv("ray_nitschke.csv")
+reggie_wayne <- read_csv("reggie_wayne.csv")
+reggie_white <- read_csv("reggie_white.csv")
+rich_gannon <- read_csv("rich_gannon.csv")
+richard_dent <- read_csv("richard_dent.csv")
+richard_seymour <- read_csv("richard_seymour.csv")
+richard_sherman <- read_csv("richard_sherman.csv")
+richmond_webb <- read_csv("richmond_webb.csv")
+rickey_jackson <- read_csv("rickey_jackson.csv")
+ricky_watters <- read_csv("ricky_watters.csv")
+rod_smith <- read_csv("rod_smith.csv")
+rod_woodson <- read_csv("rod_woodson.csv")
+roger_craig <- read_csv("roger_craig.csv")
+roger_staubach <- read_csv("roger_staubach.csv")
+roger_wehrli <- read_csv("roger_wehrli.csv")
+roman_gabriel <- read_csv("roman_gabriel.csv")
+ron_mcdole <- read_csv("ron_mcdole.csv")
+ron_yary <- read_csv("ron_yary.csv")
+ronde_barber <- read_csv("ronde_barber.csv")
+ronnie_lott <- read_csv("ronnie_lott.csv")
+russell_wilson <- read_csv("russell_wilson.csv")
+sam_mills <- read_csv("sam_mills.csv")
+sonny_jurgensen <- read_csv("sonny_jurgensen.csv")
+steve_grogan <- read_csv("steve_grogan.csv")
+steve_hutchinson <- read_csv("steve_hutchinson.csv")
+steve_largent <- read_csv("steve_largent.csv")
+steve_mcmichael <- read_csv("steve_mcmichael.csv")
+steve_mcnair <- read_csv("steve_mcnair.csv")
+steve_smith_sr <- read_csv("steve_smith_sr.csv")
+steve_wisniewski <- read_csv("steve_wisniewski.csv")
+steve_young <- read_csv("steve_young.csv")
+ted_hendricks <- read_csv("ted_hendricks.csv")
+terrell_owens <- read_csv("terrell_owens.csv")
+terrell_suggs <- read_csv("terrell_suggs.csv")
+terry_bradshaw <- read_csv("terry_bradshaw.csv")
+thurman_thomas <- read_csv("thurman_thomas.csv")
+tiki_barber <- read_csv("tiki_barber.csv")
+tim_brown <- read_csv("tim_brown.csv")
+tom_brady <- read_csv("tom_brady.csv")
+tom_mack <- read_csv("tom_mack.csv")
+tom_nalen <- read_csv("tom_nalen.csv")
+tony_dorsett <- read_csv("tony_dorsett.csv")
+tony_gonzalez <- read_csv("tony_gonzalez.csv")
+tony_romo <- read_csv("tony_romo.csv")
+too_tall_jones <- read_csv("too_tall_jones.csv")
+torry_holt <- read_csv("torry_holt.csv")
+trent_green <- read_csv("trent_green.csv")
+troy_aikman <- read_csv("troy_aikman.csv")
+troy_polamalu <- read_csv("troy_polamalu.csv")
+vinny_testaverde <- read_csv("vinny_testaverde.csv")
+von_miller <- read_csv("von_miller.csv")
+walter_jones <- read_csv("walter_jones.csv")
+walter_payton <- read_csv("walter_payton.csv")
+warren_moon <- read_csv("warren_moon.csv")
+warren_sapp <- read_csv("warren_sapp.csv")
+warrick_dunn <- read_csv("warrick_dunn.csv")
+wayne_walker <- read_csv("wayne_walker.csv")
+wes_welker <- read_csv("wes_welker.csv")
+wilber_marshall <- read_csv("wilber_marshall.csv")
+will_shields <- read_csv("will_shields.csv")
+willie_anderson <- read_csv("willie_anderson.csv")
+willie_brown <- read_csv("willie_brown.csv")
+willie_davis <- read_csv("willie_davis.csv")
+willie_roaf <- read_csv("willie_roaf.csv")
+willie_wood <- read_csv("willie_wood.csv")
+zach_thomas <- read_csv("zach_thomas.csv")
+```
+
+## Tidying
+
+All of the datasets are tidy, so tidying functions will be used later for wrangling data.
+
+## **Wrangling/Joining**
+
+For the wAV_leaders dataset, there were originally 255 observations (players) and 5 unique IDs (Rank, Player, wAV, Years, Tm). Since all 5 of the IDs were unique to the wAV_leaders dataset when compared to the other datasets, the School ID variable was added beforehand to provide a common variable for joining. Since the datasets were joined by the School variable, each school was designated as an individual observation, and variables that applied to individual players were removed. The number of players from each school was generated as a new variable, and the total wAV value for each school was calculated by adding together individual player wAV values after grouping by school.
+
+By observing the first few rows of the new wAV_schools dataset, we can see that two schools have produced the most number of successful players: Miami (FL) and USC.
+
+```{r}
+# Create new object in environment
+wAV_schools <- wAV_leaders %>%
+  select(-Rank, -Tm,-Years) %>% # Remove specific column variables
+  relocate(School) %>% # Move school variable to the front of the dataset
+  group_by(School) %>% # Create subsets by school
+  mutate(`Top Players` = n()) %>% # Create new variable counting number of observations of each school
+  select(-Player) %>% # Remove player column variable
+  mutate(`Total wAV` = sum(wAV)) %>% # Create new variable calculating the total wAV value of each school
+  select (-wAV) %>% # Remove wAV column variable
+  distinct() %>% # Remove duplicate rows
+  arrange(desc(`Total wAV`)) # Arrange by variable in descending order
+head(wAV_schools) # Quick look at beginning of dataset
+```
+
+To prepare the joining of the first three datasets (college, conference, wAV), the conference dataset's names for each school must match the names in the college dataset.
+
+```{r}
+# Save object in environment
+ncaa_schools_adj <- ncaa_schools %>%
+  mutate(School = ifelse(School == "Miami",str_replace(School, "Miami", "Miami (FL)"),School), # Replace specific string with a different string
+         School = ifelse(School == "Grambling",str_replace(School, "Grambling","Grambling State"),School),
+         School = ifelse(School == "NC State",str_replace(School, "NC State","North Carolina State"),School),
+         School = ifelse(School == "Ole Miss",str_replace(School, "Ole Miss","Mississippi"),School),
+         School = ifelse(School == "Mississippi Valley State",str_replace(School, "Mississippi Valley State","Miss. Valley State"),School),
+         School = ifelse(School == "Southern Mississippi",str_replace(School, "Southern Mississippi","Southern Miss"),School),
+         School = ifelse(School == "UTEP",str_replace(School, "UTEP","Texas-El Paso"),School),
+         School = ifelse(School == "Prairie View",str_replace(School, "Prairie View","Prairie View A&M"),School),
+         School = ifelse(School == "Maryland-Eastern Shore",str_replace(School, "Maryland-Eastern Shore","Md-Eastern Shore"),School))
+```
+
+Before joining the datasets together, the some column variables in the college dataset were removed. Since the focus is on colleges/conferences producing successful NFL players, statistics that pertain to individual players do not provide any helpful information. Additionally, the names of certain schools were adjusted to match with the names in the conference dataset.
+
+Before joining, the college dataset had 847 observations with 5 unique IDs (Players, Hall of Famers, Pro Bowl Selections, Games Played, Touchdowns), the wAV dataset had 107 observations with 2 unique IDs (Top Players, Total wAV), and the conference dataset had 842 observations with 1 unique ID (Conference). Each dataset had the School ID in common.
+
+After joining the wAV dataset to the college dataset and filtering out any schools that did not produce any of the top 255 players, there were 107 observations left, matching the wAV dataset's original number of observations. After joining the conference dataset to the new college dataset, the number of observations remained constant because the joining simply added the Conference ID to the college dataset.
+
+```{r}
+# Create new object in environment
+college_totals <- college_stats %>%
+  select(-Rk,-State,-`Active Players`,-`Highest Career Approximate Value`,-`Approximate Value`) %>% # Remove specific column variables
+  left_join(wAV_schools,by="School") %>% # Apply left_join
+  filter(!School=='None') %>% # Remove observations that are empty in the School variable
+  filter_at(vars(`Top Players`, `Total wAV`), all_vars(!is.na(.))) %>% # Remove rows with NA values in specific columns
+  arrange(desc(`Total wAV`)) %>% # Arrange by specific variable
+  mutate(School = str_replace(School, "St\\.$", "State"), # Replace specific string with a different string
+         School = str_replace(School, "Col\\.", "College"),
+         School = str_replace(School, "East\\.", "Eastern")) %>%
+  left_join(ncaa_schools_adj, by = "School") %>% # Apply left_join
+  relocate(Conference, .after=School) # Move conference variable to display following school variable
+```
+
+To provide a first look at how each conference compares to one another, we can look at the number of schools in each conference that produce NFL stars. This indicates a conference's strength and depth in competitiveness, as a strong conference would have many different schools producing high-level talent.
+
+```{r}
+# Count number of schools represented in the top 255 players for each conference
+college_totals %>%
+  group_by(Conference) %>% # Create subsets by conference
+  summarize(n=n()) %>% # Count number of schools represented in each conference
+  mutate(prop_n=n/sum(n),
+         prop_n=round(prop_n,3)) %>% # # Create new varaiable to display proportion of schools
+  arrange(desc(n)) # Arrange in descending order
+```
+
+Schools in the ACC are represented the most within the top 255 players. There also appears to be a slight gap in this category, with the top six conferences (ACC, Big Ten, SEC, Pac-12, Big 12, SWAC) having more schools that produce top-level NFL players.
+
+Another metric to determine success is the number of selections for the Pro Bowl, with well-performing players generally selected for the Pro Bowl after every season.
+
+```{r}
+college_totals %>%
+  group_by(Conference) %>%
+  summarize(`Pro Bowl Selections` = sum(`Pro Bowl Selections`)) %>%
+  arrange(desc(`Pro Bowl Selections`))
+```
+
+This time, there is a significant gap between the four conferences at the top (Big Ten, SEC, ACC, Pac-12) and the rest of the NCAA. We can also see that the top conference in pro bowl selections (Big Ten) differs from the top conference in school representation (ACC).
+
+```{r}
+# Find total number of Hall of Famers from each conference
+college_totals %>%
+  group_by(Conference) %>% # Create subsets by conference
+  summarize(`Hall of Famers` = sum(`Hall of Famers`)) %>% # Find totals for each conference based on variable
+  arrange(desc(`Hall of Famers`)) # Arrange by variable in descending order 
+```
+
+```{r}
+#Find total wAV value for each conference
+college_totals %>%
+  group_by(Conference) %>% # Create subsets by conference
+  summarize(`Total wAV` = sum(`Total wAV`)) %>% # Calculate sum of total wAV for each conference
+  arrange(desc(`Total wAV`)) # Arrange by variable in descending order
+```
+
+According to the total wAV for each conference, the ACC has produced the most successful NFL players. Like the distribution of Pro Bowl selections, there is a significant gap in total wAV value after the top four conferences.
+
+To observe each conference's yearly wAV progression, the 255 player datasets must first be joined together. Each player dataset was cleaned to display seasonal AV values, with the observation for the 2022 season removed since the season was ongoing. Additionally, a weight function was created to apply to each player's AV values and match the wAV value for each player (100% of the best season, 95% of the second-best season, 90% of the third-best season, etc.). Each dataset was appended to the previous rendition, then saved as a new rendition.
+
+```{r}
+# Create function to calculate wAV values for each season
+weight <- function(x){
+  (1+0.05*(1-x))
+}
+# Create new object in environment
+tom_brady_av <- tom_brady %>%
+  select(Year,AV) %>% # Remove all column except year and AV
+  filter(!(Year %in% c('Career','20 yrs','3 yrs','2022'))) # Remove specific rows
+w <- c() # Store empty vector
+for(i in seq_along(tom_brady_av$AV)){ # Run for-loop to create weight vector for each year
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- tom_brady_av %>% # Save object in environment
+  mutate(Year = str_replace(Year,"\\*",""), # Replace specific string in variable
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>% # Arrange in descending order of AV
+  mutate(w = w, # Create new variable for weight
+         wAV = AV*w) %>% # Create new variable for wAV
+  arrange(Year) %>% # Arrange by year
+  select(-AV,-w) %>% # Remove specific variables
+  pivot_wider(names_from = Year, # differentiate by year
+                values_from = wAV) %>% # keep values of wAV in corresponding variable
+  mutate(Player = "Tom Brady") %>% # Create new variable
+  relocate(Player) # Move player variable to front of dataset
+peyton_manning_av <- peyton_manning %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','13 yrs','4 yrs')))
+w <- c()
+for(i in seq_along(peyton_manning_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- peyton_manning_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Peyton Manning") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV) # Append to specific dataset
+drew_brees_av <- drew_brees %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','15 yrs','5 yrs')))
+w <- c()
+for(i in seq_along(drew_brees_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- drew_brees_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Drew Brees") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+reggie_white_av <- reggie_white %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','8 yrs','6 yrs','1 yr')))
+w <- c()
+for(i in seq_along(reggie_white_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- reggie_white_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Reggie White") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jerry_rice_av <- jerry_rice %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','16 yrs','4 yrs','1 yr')),
+         !is.na(Year)) # Remove observations with NA values in year
+w <- c()
+for(i in seq_along(jerry_rice_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jerry_rice_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jerry Rice") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+ray_lewis_av <- ray_lewis %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(ray_lewis_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- ray_lewis_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Ray Lewis") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+aaron_rodgers_av <- aaron_rodgers %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','2022')))
+w <- c()
+for(i in seq_along(aaron_rodgers_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- aaron_rodgers_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Aaron Rodgers") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+brett_favre_av <- brett_favre %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','16 yrs','2 yrs','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(brett_favre_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- brett_favre_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Brett Favre") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+bruce_smith_av <- bruce_smith %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','15 yrs','4 yrs')))
+w <- c()
+for(i in seq_along(bruce_smith_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- bruce_smith_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Bruce Smith") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+philip_rivers_av <- philip_rivers %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','16 yrs','1 yr')))
+w <- c()
+for(i in seq_along(philip_rivers_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- philip_rivers_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Philip Rivers") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+fran_tarkenton_av <- fran_tarkenton %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','13 yrs','5 yrs')))
+w <- c()
+for(i in seq_along(fran_tarkenton_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- fran_tarkenton_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Fran Tarkenton") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+lawrence_taylor_av <- lawrence_taylor %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(lawrence_taylor_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- lawrence_taylor_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Lawrence Taylor") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+dan_marino_av <- dan_marino %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(dan_marino_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- dan_marino_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Dan Marino") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+matt_ryan_av <- matt_ryan %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','14 yrs','1 yr','2022')))
+w <- c()
+for(i in seq_along(matt_ryan_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- matt_ryan_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Matt Ryan") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+alan_page_av <- alan_page %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','4 yrs')),
+         !is.na(Year))
+w <- c()
+for(i in seq_along(alan_page_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- alan_page_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Alan Page") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+rod_woodson_av <- rod_woodson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','4 yrs','2 yrs','1 yr')))
+w <- c()
+for(i in seq_along(rod_woodson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- rod_woodson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Rod Woodson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+derrick_brooks_av <- derrick_brooks %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(derrick_brooks_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- derrick_brooks_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Derrick Brooks") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+john_elway_av <- john_elway %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(john_elway_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- john_elway_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "John Elway") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+bruce_matthews_av <- bruce_matthews %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(bruce_matthews_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- bruce_matthews_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Bruce Matthews") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+anthony_munoz_av <- anthony_munoz %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(anthony_munoz_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- anthony_munoz_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Anthony Munoz") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+junior_seau_av <- junior_seau %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','13 yrs','4 yrs','3 yrs')))
+w <- c()
+for(i in seq_along(junior_seau_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- junior_seau_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Junior Seau") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+marshall_faulk_av <- marshall_faulk %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','7 yrs','5 yrs')))
+w <- c()
+for(i in seq_along(marshall_faulk_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- marshall_faulk_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Marshall Faulk") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+steve_young_av <- steve_young %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','13 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(steve_young_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- steve_young_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Steve Young") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+carl_eller_av <- carl_eller %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','15 yrs','1 yr')))
+w <- c()
+for(i in seq_along(carl_eller_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- carl_eller_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Carl Eller") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+ben_roethlisberger_av <- ben_roethlisberger %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(ben_roethlisberger_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- ben_roethlisberger_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Ben Roethlisberger") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+julius_peppers_av <- julius_peppers %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','4 yrs','3 yrs')))
+w <- c()
+for(i in seq_along(julius_peppers_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- julius_peppers_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Julius Peppers") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+randall_mcdaniel_av <- randall_mcdaniel %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(randall_mcdaniel_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- randall_mcdaniel_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Randall McDaniel") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+emmitt_smith_av <- emmitt_smith %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','13 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(emmitt_smith_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- emmitt_smith_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Emmitt Smith") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+ladainian_tomlinson_av <- ladainian_tomlinson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(ladainian_tomlinson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- ladainian_tomlinson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "LaDainian Tomlinson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+deion_sanders_av <- deion_sanders %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','5 yrs','5 yrs','2 yrs','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(deion_sanders_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- deion_sanders_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Deion Sanders") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+walter_payton_av <- walter_payton %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(walter_payton_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- walter_payton_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Walter Payton") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+russell_wilson_av <- russell_wilson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','1 yr','2022')))
+w <- c()
+for(i in seq_along(russell_wilson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- russell_wilson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Russell Wilson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+joe_montana_av <- joe_montana %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','13 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(joe_montana_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- joe_montana_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Joe Montana") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+randy_moss_av <- randy_moss %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','8 yrs','4 yrs','2 yrs','1 yr','1 yr')),
+         !is.na(Year))
+w <- c()
+for(i in seq_along(randy_moss_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- randy_moss_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Randy Moss") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+mike_singletary_av <- mike_singletary %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(mike_singletary_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- mike_singletary_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Mike Singletary") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+dan_fouts_av <- dan_fouts %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(dan_fouts_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- dan_fouts_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Dan Fouts") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+marvin_harrison_av <- marvin_harrison %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(marvin_harrison_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- marvin_harrison_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Marvin Harrison") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+ronnie_lott_av <- ronnie_lott %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','2 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(ronnie_lott_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- ronnie_lott_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Ronnie Lott") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+michael_strahan_av <- michael_strahan %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(michael_strahan_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- michael_strahan_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Michael Strahan") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+terrell_owens_av <- terrell_owens %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','8 yrs','3 yrs','2 yrs','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(terrell_owens_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- terrell_owens_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Terrell Owens") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+eli_manning_av <- eli_manning %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(eli_manning_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- eli_manning_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Eli Manning") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+ken_anderson_av <- ken_anderson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(ken_anderson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- ken_anderson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Ken Anderson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+barry_sanders_av <- barry_sanders %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(barry_sanders_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- barry_sanders_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Barry Sanders") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+brian_urlacher_av <- brian_urlacher %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(brian_urlacher_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- brian_urlacher_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Brian Urlacher") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+paul_krause_av <- paul_krause %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','4 yrs')))
+w <- c()
+for(i in seq_along(paul_krause_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- paul_krause_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Paul Krause") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jeff_saturday_av <- jeff_saturday %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','13 yrs','1 yr')))
+w <- c()
+for(i in seq_along(jeff_saturday_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jeff_saturday_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jeff Saturday") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jason_taylor_av <- jason_taylor %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','13 yrs','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(jason_taylor_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jason_taylor_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jason Taylor") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+champ_bailey_av <- champ_bailey %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','5 yrs')))
+w <- c()
+for(i in seq_along(champ_bailey_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- champ_bailey_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Champ Bailey") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+warren_sapp_av <- warren_sapp %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','4 yrs')))
+w <- c()
+for(i in seq_along(warren_sapp_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- warren_sapp_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Warren Sapp") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+merlin_olsen_av <- merlin_olsen %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(merlin_olsen_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- merlin_olsen_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Merlin Olsen") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+warren_moon_av <- warren_moon %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','3 yrs','2 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(warren_moon_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- warren_moon_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Warren Moon") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+randy_white_av <- randy_white %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(randy_white_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- randy_white_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Randy White") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+reggie_wayne_av <- reggie_wayne %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(reggie_wayne_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- reggie_wayne_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Reggie Wayne") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+charles_woodson_av <- charles_woodson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','7 yrs')))
+w <- c()
+for(i in seq_along(charles_woodson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- charles_woodson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Charles Woodson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+zach_thomas_av <- zach_thomas %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','1 yr')))
+w <- c()
+for(i in seq_along(zach_thomas_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- zach_thomas_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Zach Thomas") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+cam_newton_av <- cam_newton %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','1 yr')))
+w <- c()
+for(i in seq_along(cam_newton_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- cam_newton_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Cam Newton") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+mike_webster_av <- mike_webster %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','15 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(mike_webster_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- mike_webster_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Mike Webster") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+chris_doleman_av <- chris_doleman %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','3 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(chris_doleman_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- chris_doleman_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Chris Doleman") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jahri_evans_av <- jahri_evans %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','1 yr')))
+w <- c()
+for(i in seq_along(jahri_evans_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jahri_evans_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jahri Evans") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+johnny_unitas_av <- johnny_unitas %>%
+  select(Year,AV) %>%
+    mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  filter(!(Year %in% c('Career','17 yrs','1 yr','1956','1957','1958','1959')))
+w <- c()
+for(i in seq_along(johnny_unitas_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- johnny_unitas_av %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Johnny Unitas") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jack_ham_av <- jack_ham %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(jack_ham_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jack_ham_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jack Ham") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+will_shields_av <- will_shields %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(will_shields_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- will_shields_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Will Shields") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+edgerrin_james_av <- edgerrin_james %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','7 yrs','3 yrs','1 yr')))
+w <- c()
+for(i in seq_along(edgerrin_james_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- edgerrin_james_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Edgerrin James") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+matthew_stafford_av <- matthew_stafford %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','2 yrs','2022')))
+w <- c()
+for(i in seq_along(matthew_stafford_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- matthew_stafford_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Matthew Stafford") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+ted_hendricks_av <- ted_hendricks %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','5 yrs','1 yr')))
+w <- c()
+for(i in seq_along(ted_hendricks_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- ted_hendricks_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Ted Hendricks") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+rickey_jackson_av <- rickey_jackson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','13 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(rickey_jackson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- rickey_jackson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Rickey Jackson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+john_hannah_av <- john_hannah %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(john_hannah_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- john_hannah_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "John Hannah") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jim_otto_av <- jim_otto %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(jim_otto_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jim_otto_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jim Otto") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jack_youngblood_av <- jack_youngblood %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(jack_youngblood_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jack_youngblood_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jack Youngblood") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+bob_lilly_av <- bob_lilly %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(bob_lilly_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- bob_lilly_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Bob Lilly") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+willie_roaf_av <- willie_roaf %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','4 yrs')))
+w <- c()
+for(i in seq_along(willie_roaf_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- willie_roaf_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Willie Roaf") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jack_lambert_av <- jack_lambert %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(jack_lambert_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jack_lambert_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jack Lambert") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+aaron_donald_av <- aaron_donald %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','2022')))
+w <- c()
+for(i in seq_along(aaron_donald_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- aaron_donald_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Aaron Donald") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+thurman_thomas_av <- thurman_thomas %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','1 yr')))
+w <- c()
+for(i in seq_along(thurman_thomas_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- thurman_thomas_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Thurman Thomas") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+terrell_suggs_av <- terrell_suggs %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','16 yrs','1 yr','1 yr')),
+         !is.na(Year))
+w <- c()
+for(i in seq_along(terrell_suggs_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- terrell_suggs_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Terrell Suggs") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+aeneas_williams_av <- aeneas_williams %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','4 yrs')))
+w <- c()
+for(i in seq_along(aeneas_williams_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- aeneas_williams_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Aeneas Williams") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+bobby_wagner_av <- bobby_wagner %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','1 yr','2022')))
+w <- c()
+for(i in seq_along(bobby_wagner_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- bobby_wagner_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Bobby Wagner") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+randall_cunningham_av <- randall_cunningham %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','3 yrs','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(randall_cunningham_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- randall_cunningham_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Randall Cunningham") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+joe_greene_av <- joe_greene %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(joe_greene_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- joe_greene_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Joe Greene") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+len_dawson_av <- len_dawson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','14 yrs','3 yrs','2 yrs','1957','1958','1959')))
+w <- c()
+for(i in seq_along(len_dawson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- len_dawson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Len Dawson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+willie_brown_av <- willie_brown %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','4 yrs')))
+w <- c()
+for(i in seq_along(willie_brown_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- willie_brown_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Willie Brown") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+ronde_barber_av <- ronde_barber %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(ronde_barber_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- ronde_barber_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Ronde Barber") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+mike_haynes_av <- mike_haynes %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','7 yrs','7 yrs')))
+w <- c()
+for(i in seq_along(mike_haynes_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- mike_haynes_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Mike Haynes") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+paul_warfield_av <- paul_warfield %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','8 yrs','5 yrs')))
+w <- c()
+for(i in seq_along(paul_warfield_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- paul_warfield_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Paul Warfield") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+kevin_mawae_av <- kevin_mawae %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','8 yrs','4 yrs','4 yrs')))
+w <- c()
+for(i in seq_along(kevin_mawae_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- kevin_mawae_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Kevin Mawae") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+gene_upshaw_av <- gene_upshaw %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(gene_upshaw_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- gene_upshaw_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Gene Upshaw") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jim_brown_av <- jim_brown %>%
+  select(Year,AV) %>%
+    mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  filter(!(Year %in% c('Career','1957','1958','1959')))
+w <- c()
+for(i in seq_along(jim_brown_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jim_brown_av %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jim Brown") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+john_randle_av <- john_randle %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','3 yrs')))
+w <- c()
+for(i in seq_along(john_randle_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- john_randle_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "John Randle") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+alan_faneca_av <- alan_faneca %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','2 yrs','1 yr')))
+w <- c()
+for(i in seq_along(alan_faneca_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- alan_faneca_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Alan Faneca") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+terry_bradshaw_av <- terry_bradshaw %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(terry_bradshaw_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- terry_bradshaw_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Terry Bradshaw") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jim_tyrer_av <- jim_tyrer %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','13 yrs','1 yr')))
+w <- c()
+for(i in seq_along(jim_tyrer_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jim_tyrer_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jim Tyrer") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jj_watt_av <- jj_watt %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','2 yrs','2022')))
+w <- c()
+for(i in seq_along(jj_watt_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jj_watt_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "J.J. Watt") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+tony_dorsett_av <- tony_dorsett %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','1 yr')))
+w <- c()
+for(i in seq_along(tony_dorsett_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- tony_dorsett_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Tony Dorsett") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+donovan_mcnabb_av <- donovan_mcnabb %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(donovan_mcnabb_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- donovan_mcnabb_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Donovan McNabb") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+carson_palmer_av <- carson_palmer %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','7 yrs','5 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(carson_palmer_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- carson_palmer_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Carson Palmer") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+boomer_esiason_av <- boomer_esiason %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','3 yrs','1 yr')))
+w <- c()
+for(i in seq_along(boomer_esiason_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- boomer_esiason_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Boomer Esiason") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+john_hadl_av <- john_hadl %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','2 yrs','2 yrs','2 yrs')),
+         !is.na(Year))
+w <- c()
+for(i in seq_along(john_hadl_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- john_hadl_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "John Hadl") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+herb_adderley_av <- herb_adderley %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','3 yrs')))
+w <- c()
+for(i in seq_along(herb_adderley_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- herb_adderley_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Herb Adderley") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+tim_brown_av <- tim_brown %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','16 yrs','1 yr')))
+w <- c()
+for(i in seq_along(tim_brown_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- tim_brown_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Tim Brown") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+sonny_jurgensen_av <- sonny_jurgensen %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','7 yrs','1957','1958','1959')))
+w <- c()
+for(i in seq_along(sonny_jurgensen_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- sonny_jurgensen_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Sonny Jurgensen") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+drew_bledsoe_av <- drew_bledsoe %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','3 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(drew_bledsoe_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- drew_bledsoe_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Drew Bledsoe") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+bobby_bell_av <- bobby_bell %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(bobby_bell_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- bobby_bell_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Bobby Bell") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+nick_buoniconti_av <- nick_buoniconti %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','7 yrs','7 yrs')))
+w <- c()
+for(i in seq_along(nick_buoniconti_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- nick_buoniconti_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Nick Buoniconti") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+larry_little_av <- larry_little %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(larry_little_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- larry_little_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Larry Little") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+michael_irvin_av <- michael_irvin %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(michael_irvin_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- michael_irvin_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Michael Irvin") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+derrick_thomas_av <- derrick_thomas %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(derrick_thomas_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- derrick_thomas_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Derrick Thomas") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+roger_staubach_av <- roger_staubach %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(roger_staubach_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- roger_staubach_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Roger Staubach") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+ron_yary_av <- ron_yary %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','14 yrs','1 yr')))
+w <- c()
+for(i in seq_along(ron_yary_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- ron_yary_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Ron Yary") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+brian_dawkins_av <- brian_dawkins %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','13 yrs','3 yrs')))
+w <- c()
+for(i in seq_along(brian_dawkins_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- brian_dawkins_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Brian Dawkins") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+rod_smith_av <- rod_smith %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(rod_smith_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- rod_smith_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Rod Smith") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+marcus_allen_av <- marcus_allen %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','5 yrs')))
+w <- c()
+for(i in seq_along(marcus_allen_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- marcus_allen_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Marcus Allen") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+bob_griese_av <- bob_griese %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(bob_griese_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- bob_griese_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Bob Griese") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+orlando_pace_av <- orlando_pace %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','1 yr')))
+w <- c()
+for(i in seq_along(orlando_pace_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- orlando_pace_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Orlando Pace") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+franco_harris_av <- franco_harris %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','1 yr')))
+w <- c()
+for(i in seq_along(franco_harris_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- franco_harris_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Franco Harris") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jimmy_johnson_av <- jimmy_johnson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(jimmy_johnson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jimmy_johnson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jimmy Johnson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+deacon_jones_av <- deacon_jones %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','2 yrs','1 yr')))
+w <- c()
+for(i in seq_along(deacon_jones_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- deacon_jones_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Deacon Jones") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+gary_zimmerman_av <- gary_zimmerman %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','7 yrs','5 yrs')))
+w <- c()
+for(i in seq_along(gary_zimmerman_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- gary_zimmerman_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Gary Zimmerman") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jim_kelly_av <- jim_kelly %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(jim_kelly_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jim_kelly_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jim Kelly") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+darrell_green_av <- darrell_green %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(darrell_green_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- darrell_green_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Darrell Green") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+calais_campbell_av <- calais_campbell %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','3 yrs','3 yrs','2022')))
+w <- c()
+for(i in seq_along(calais_campbell_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- calais_campbell_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Calais Campbell") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+steve_largent_av <- steve_largent %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(steve_largent_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- steve_largent_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Steve Largent") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+mick_tingelhoff_av <- mick_tingelhoff %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(mick_tingelhoff_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- mick_tingelhoff_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Mick Tingelhoff") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+willie_davis_av <- willie_davis %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','2 yrs','1958','1959')))
+w <- c()
+for(i in seq_along(willie_davis_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- willie_davis_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Willie Davis") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+isiah_robertson_av <- isiah_robertson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','8 yrs','4 yrs')))
+w <- c()
+for(i in seq_along(isiah_robertson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- isiah_robertson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Isiah Robertson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+tiki_barber_av <- tiki_barber %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(tiki_barber_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- tiki_barber_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Tiki Barber") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+steve_smith_sr_av <- steve_smith_sr %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','13 yrs','3 yrs')))
+w <- c()
+for(i in seq_along(steve_smith_sr_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- steve_smith_sr_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Steve Smith Sr.") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+james_lofton_av <- james_lofton %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','4 yrs','2 yrs','1 yr','1 yr')),
+         !is.na(Year))
+w <- c()
+for(i in seq_along(james_lofton_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- james_lofton_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "James Lofton") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+curtis_martin_av <- curtis_martin %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','8 yrs','3 yrs')))
+w <- c()
+for(i in seq_along(curtis_martin_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- curtis_martin_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Curtis Martin") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+logan_mankins_av <- logan_mankins %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(logan_mankins_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- logan_mankins_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Logan Mankins") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jim_marshall_av <- jim_marshall %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','19 yrs','1 yr')))
+w <- c()
+for(i in seq_along(jim_marshall_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jim_marshall_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jim Marshall") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+dan_hampton_av <- dan_hampton %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(dan_hampton_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- dan_hampton_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Dan Hampton") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+steve_wisniewski_av <- steve_wisniewski %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(steve_wisniewski_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- steve_wisniewski_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Steve Wisniewski") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+tom_nalen_av <- tom_nalen %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(tom_nalen_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- tom_nalen_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Tom Nalen") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+ed_reed_av <- ed_reed %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','1 yr','1 yr')),
+         !is.na(Year))
+w <- c()
+for(i in seq_along(ed_reed_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- ed_reed_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Ed Reed") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+kevin_williams_av <- kevin_williams %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(kevin_williams_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- kevin_williams_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Kevin Williams") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+richmond_webb_av <- richmond_webb %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(richmond_webb_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- richmond_webb_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Richmond Webb") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+sam_mills_av <- sam_mills %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','3 yrs')))
+w <- c()
+for(i in seq_along(sam_mills_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- sam_mills_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Sam Mills") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+larry_allen_av <- larry_allen %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(larry_allen_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- larry_allen_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Larry Allen") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+don_maynard_av <- don_maynard %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','13 yrs','1 yr','1 yr','1958','1959')))
+w <- c()
+for(i in seq_along(don_maynard_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- don_maynard_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Don Maynard") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+justin_smith_av <- justin_smith %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','7 yrs','7 yrs')))
+w <- c()
+for(i in seq_along(justin_smith_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- justin_smith_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Justin Smith") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+adrian_peterson_av <- adrian_peterson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','2 yrs','1 yr','1 yr','1 yr','1 yr','1 yr')),
+         !is.na(Year))
+w <- c()
+for(i in seq_along(adrian_peterson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- adrian_peterson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Adrian Peterson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+isaac_bruce_av <- isaac_bruce %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','14 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(isaac_bruce_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- isaac_bruce_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Isaac Bruce") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jared_allen_av <- jared_allen %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','6 yrs','4 yrs','2 yrs','1 yr')),
+         !is.na(Year))
+w <- c()
+for(i in seq_along(jared_allen_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jared_allen_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jared Allen") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+demarcus_ware_av <- demarcus_ware %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','3 yrs')))
+w <- c()
+for(i in seq_along(demarcus_ware_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- demarcus_ware_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "DeMarcus Ware") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+steve_mcmichael_av <- steve_mcmichael %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','13 yrs','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(steve_mcmichael_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- steve_mcmichael_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Steve McMichael") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+von_miller_av <- von_miller %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','1 yr','1 yr','2022')),
+         !is.na(Year))
+w <- c()
+for(i in seq_along(von_miller_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- von_miller_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Von Miller") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+lem_barney_av <- lem_barney %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(lem_barney_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- lem_barney_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Lem Barney") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+haloti_ngata_av <- haloti_ngata %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','3 yrs','1 yr')))
+w <- c()
+for(i in seq_along(haloti_ngata_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- haloti_ngata_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Haloti Ngata") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+andrew_whitworth_av <- andrew_whitworth %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','5 yrs')))
+w <- c()
+for(i in seq_along(andrew_whitworth_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- andrew_whitworth_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Andrew Whitworth") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+ndamukong_suh_av <- ndamukong_suh %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','5 yrs','3 yrs','3 yrs','1 yr')))
+w <- c()
+for(i in seq_along(ndamukong_suh_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- ndamukong_suh_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Ndamukong Suh") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+chris_hanburger_av <- chris_hanburger %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(chris_hanburger_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- chris_hanburger_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Chris Hanburger") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+ricky_watters_av <- ricky_watters %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','4 yrs','3 yrs','3 yrs')))
+w <- c()
+for(i in seq_along(ricky_watters_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- ricky_watters_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Ricky Watters") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+mel_renfro_av <- mel_renfro %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(mel_renfro_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- mel_renfro_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Mel Renfro") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+torry_holt_av <- torry_holt %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','1 yr')))
+w <- c()
+for(i in seq_along(torry_holt_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- torry_holt_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Torry Holt") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+julio_jones_av <- julio_jones %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','1 yr','1 yr','2022')))
+w <- c()
+for(i in seq_along(julio_jones_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- julio_jones_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Julio Jones") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+john_brodie_av <- john_brodie %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','1957','1958','1959')))
+w <- c()
+for(i in seq_along(john_brodie_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- john_brodie_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "John Brodie") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+wilber_marshall_av <- wilber_marshall %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','5 yrs','4 yrs','1 yr','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(wilber_marshall_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- wilber_marshall_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Wilber Marshall") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+steve_mcnair_av <- steve_mcnair %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(steve_mcnair_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- steve_mcnair_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Steve McNair") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+cris_carter_av <- cris_carter %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','3 yrs','1 yr')))
+w <- c()
+for(i in seq_along(cris_carter_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- cris_carter_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Cris Carter") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+lance_alworth_av <- lance_alworth %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(lance_alworth_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- lance_alworth_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Lance Alworth") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+pat_swilling_av <- pat_swilling %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','7 yrs','3 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(pat_swilling_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- pat_swilling_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Pat Swilling") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+oj_simpson_av <- oj_simpson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(oj_simpson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- oj_simpson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "O.J. Simpson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+lance_briggs_av <- lance_briggs %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(lance_briggs_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- lance_briggs_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Lance Briggs") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+lomas_brown_av <- lomas_brown %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','3 yrs','2 yrs','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(lomas_brown_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- lomas_brown_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Lomas Brown") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+patrick_peterson_av <- patrick_peterson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','2 yrs','2022')))
+w <- c()
+for(i in seq_along(patrick_peterson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- patrick_peterson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Patrick Peterson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+alex_karras_av <- alex_karras %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','1958','1959')))
+w <- c()
+for(i in seq_along(alex_karras_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- alex_karras_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Alex Karras") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+richard_dent_av <- richard_dent %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','1 yr','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(richard_dent_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- richard_dent_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Richard Dent") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+roman_gabriel_av <- roman_gabriel %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','5 yrs')))
+w <- c()
+for(i in seq_along(roman_gabriel_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- roman_gabriel_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Roman Gabriel") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+andre_reed_av <- andre_reed %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','15 yrs','1 yr')))
+w <- c()
+for(i in seq_along(andre_reed_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- andre_reed_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Andre Reed") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+alex_smith_av <- alex_smith %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','7 yrs','5 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(alex_smith_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- alex_smith_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Alex Smith") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+walter_jones_av <- walter_jones %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(walter_jones_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- walter_jones_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Walter Jones") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+cortez_kennedy_av <- cortez_kennedy %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(cortez_kennedy_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- cortez_kennedy_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Cortez Kennedy") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+mel_blount_av <- mel_blount %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(mel_blount_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- mel_blount_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Mel Blount") %>%
+  relocate(Player)%>%
+  bind_rows(player_yearly_wAV)
+hardy_nickerson_av <- hardy_nickerson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','7 yrs','6 yrs','2 yrs','1 yr')))
+w <- c()
+for(i in seq_along(hardy_nickerson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- hardy_nickerson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Hardy Nickerson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+richard_sherman_av <- richard_sherman %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','7 yrs','3 yrs','1 yr')))
+w <- c()
+for(i in seq_along(richard_sherman_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- richard_sherman_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Richard Sherman") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+ron_mcdole_av <- ron_mcdole %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','8 yrs','8 yrs','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(ron_mcdole_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- ron_mcdole_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Ron McDole") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+cornell_green_av <- cornell_green %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(cornell_green_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- cornell_green_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Cornell Green") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+rich_gannon_av <- rich_gannon %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','6 yrs','6 yrs','4 yrs','1 yr')))
+w <- c()
+for(i in seq_along(rich_gannon_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- rich_gannon_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Rich Gannon") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+henry_ellard_av <- henry_ellard %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','5 yrs','1 yr')),
+         !is.na(Year))
+w <- c()
+for(i in seq_along(henry_ellard_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- henry_ellard_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Henry Ellard") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+dave_krieg_av <- dave_krieg %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','2 yrs','2 yrs','1 yr','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(dave_krieg_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- dave_krieg_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Dave Krieg") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jason_peters_av <- jason_peters %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','5 yrs','1 yr','1 yr','2022')))
+w <- c()
+for(i in seq_along(jason_peters_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jason_peters_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jason Peters") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+vinny_testaverde_av <- vinny_testaverde %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','7 yrs','6 yrs','3 yrs','2 yrs','1 yr','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(vinny_testaverde_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- vinny_testaverde_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Vinny Testaverde") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+george_blanda_av <- george_blanda %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','9 yrs','7 yrs','1 yr','1949','1950','1951','1952','1953','1954','1955','1956','1957','1958','1959')),
+         !is.na(Year))
+w <- c()
+for(i in seq_along(george_blanda_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- george_blanda_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "George Blanda") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+mark_brunell_av <- mark_brunell %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','3 yrs','2 yrs','2 yrs','1 yr')))
+w <- c()
+for(i in seq_along(mark_brunell_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- mark_brunell_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Mark Brunell") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+warrick_dunn_av <- warrick_dunn %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','6 yrs','6 yrs')))
+w <- c()
+for(i in seq_along(warrick_dunn_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- warrick_dunn_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Warrick Dunn") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+ken_riley_av <- ken_riley %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(ken_riley_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- ken_riley_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Ken Riley") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+neil_smith_av <- neil_smith %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','3 yrs','1 yr')))
+w <- c()
+for(i in seq_along(neil_smith_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- neil_smith_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Neil Smith") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+troy_polamalu_av <- troy_polamalu %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(troy_polamalu_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- troy_polamalu_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Troy Polamalu") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+buck_buchanan_av <- buck_buchanan %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(buck_buchanan_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- buck_buchanan_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Buck Buchanan") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+dermontti_dawson_av <- dermontti_dawson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(dermontti_dawson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- dermontti_dawson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Dermontti Dawson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+eric_allen_av <- eric_allen %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','7 yrs','4 yrs','3 yrs')))
+w <- c()
+for(i in seq_along(eric_allen_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- eric_allen_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Eric Allen") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+mike_kenn_av <- mike_kenn %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(mike_kenn_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- mike_kenn_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Mike Kenn") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+troy_aikman_av <- troy_aikman %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(troy_aikman_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- troy_aikman_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Troy Aikman") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+kurt_warner_av <- kurt_warner %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','6 yrs','5 yrs','1 yr')))
+w <- c()
+for(i in seq_along(kurt_warner_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- kurt_warner_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Kurt Warner") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+forrest_gregg_av <- forrest_gregg %>%
+  select(Year,AV) %>%
+    mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  filter(!(Year %in% c('Career','14 yrs','1 yr','1956','1957','1958','1959')))
+w <- c()
+for(i in seq_along(forrest_gregg_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- forrest_gregg_av %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Forrest Gregg") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+harry_carson_av <- harry_carson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(harry_carson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- harry_carson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Harry Carson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+tony_gonzalez_av <- tony_gonzalez %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','5 yrs')))
+w <- c()
+for(i in seq_along(tony_gonzalez_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- tony_gonzalez_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Tony Gonzalez") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jonathan_ogden_av <- jonathan_ogden %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(jonathan_ogden_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jonathan_ogden_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jonathan Ogden") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+willie_wood_av <- willie_wood %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(willie_wood_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- willie_wood_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Willie Wood") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jim_hart_av <- jim_hart %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','18 yrs','1 yr')))
+w <- c()
+for(i in seq_along(jim_hart_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jim_hart_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jim Hart") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+ken_houston_av <- ken_houston %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','8 yrs','6 yrs')))
+w <- c()
+for(i in seq_along(ken_houston_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- ken_houston_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Ken Houston") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+roger_craig_av <- roger_craig %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','8 yrs','2 yrs','1 yr')))
+w <- c()
+for(i in seq_along(roger_craig_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- roger_craig_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Roger Craig") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+london_fletcher_av <- london_fletcher %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','7 yrs','5 yrs','4 yrs')))
+w <- c()
+for(i in seq_along(london_fletcher_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- london_fletcher_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "London Fletcher") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+ray_nitschke_av <- ray_nitschke %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','1958','1959')))
+w <- c()
+for(i in seq_along(ray_nitschke_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- ray_nitschke_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Ray Nitschke") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+howie_long_av <- howie_long %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(howie_long_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- howie_long_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Howie Long") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+charley_taylor_av <- charley_taylor %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(charley_taylor_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- charley_taylor_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Charley Taylor") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+james_farrior_av <- james_farrior %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','5 yrs')))
+w <- c()
+for(i in seq_along(james_farrior_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- james_farrior_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "James Farrior") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+lemar_parrish_av <- lemar_parrish %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','8 yrs','4 yrs','1 yr')))
+w <- c()
+for(i in seq_along(lemar_parrish_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- lemar_parrish_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Lemar Parrish") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+bobby_boyd_av <- bobby_boyd %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(bobby_boyd_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- bobby_boyd_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Bobby Boyd") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+henry_jordan_av <- henry_jordan %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','2 yrs','1957','1958','1959')))
+w <- c()
+for(i in seq_along(henry_jordan_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- henry_jordan_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Henry Jordan") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+tony_romo_av <- tony_romo %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(tony_romo_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- tony_romo_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Tony Romo") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+chuck_howley_av <- chuck_howley %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','13 yrs','2 yrs','1958','1959')))
+w <- c()
+for(i in seq_along(chuck_howley_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- chuck_howley_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Chuck Howley") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+steve_hutchinson_av <- steve_hutchinson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','6 yrs','5 yrs','1 yr')))
+w <- c()
+for(i in seq_along(steve_hutchinson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- steve_hutchinson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Steve Hutchinson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+andre_johnson_av <- andre_johnson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(andre_johnson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- andre_johnson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Andre Johnson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+dick_schafrath_av <- dick_schafrath %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','1959')))
+w <- c()
+for(i in seq_along(dick_schafrath_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- dick_schafrath_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Dick Schafrath") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+frank_gore_av <- frank_gore %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','3 yrs','1 yr','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(frank_gore_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- frank_gore_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Frank Gore") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+clay_matthews_av <- clay_matthews %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','16 yrs','3 yrs')))
+w <- c()
+for(i in seq_along(clay_matthews_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- clay_matthews_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Clay Matthews") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+too_tall_jones_av <- too_tall_jones %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(too_tall_jones_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- too_tall_jones_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Too Tall Jones") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+johnny_robinson_av <- johnny_robinson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(johnny_robinson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- johnny_robinson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Johnny Robinson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+trent_green_av <- trent_green %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','6 yrs','2 yrs','2 yrs','1 yr')))
+w <- c()
+for(i in seq_along(trent_green_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- trent_green_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Trent Green") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+jimmy_smith_av <- jimmy_smith %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','1 yr')))
+w <- c()
+for(i in seq_along(jimmy_smith_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- jimmy_smith_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Jimmy Smith") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+joe_namath_av <- joe_namath %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','1 yr')))
+w <- c()
+for(i in seq_along(joe_namath_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- joe_namath_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Joe Namath") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+darrelle_revis_av <- darrelle_revis %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','8 yrs','1 yr','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(darrelle_revis_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- darrelle_revis_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Darrelle Revis") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+larry_fitzgerald_av <- larry_fitzgerald %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(larry_fitzgerald_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- larry_fitzgerald_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Larry Fitzgerald") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+mike_munchak_av <- mike_munchak %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(mike_munchak_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- mike_munchak_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Mike Munchak") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+karl_mecklenburg_av <- karl_mecklenburg %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(karl_mecklenburg_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- karl_mecklenburg_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Karl Mecklenburg") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+antonio_gates_av <- antonio_gates %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(antonio_gates_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- antonio_gates_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Antonio Gates") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+patrick_willis_av <- patrick_willis %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(patrick_willis_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- patrick_willis_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Patrick Willis") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+willie_anderson_av <- willie_anderson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','12 yrs','1 yr')))
+w <- c()
+for(i in seq_along(willie_anderson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- willie_anderson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Willie Anderson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+harold_jackson_av <- harold_jackson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','6 yrs','4 yrs','4 yrs','1 yrs','1 yr')))
+w <- c()
+for(i in seq_along(harold_jackson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- harold_jackson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Harold Jackson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+art_shell_av <- art_shell %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(art_shell_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- art_shell_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Art Shell") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+wayne_walker_av <- wayne_walker %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','1958','1959')))
+w <- c()
+for(i in seq_along(wayne_walker_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- wayne_walker_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Wayne Walker") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+ken_stabler_av <- ken_stabler %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','10 yrs','3 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(ken_stabler_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- ken_stabler_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Ken Stabler") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+joe_flacco_av <- joe_flacco %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','3 yrs','1 yr','2022')))
+w <- c()
+for(i in seq_along(joe_flacco_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- joe_flacco_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Joe Flacco") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+kevin_greene_av <- kevin_greene %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','8 yrs','3 yrs','3 yrs','1 yr')))
+w <- c()
+for(i in seq_along(kevin_greene_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- kevin_greene_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Kevin Greene") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+cameron_jordan_av <- cameron_jordan %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','2022')))
+w <- c()
+for(i in seq_along(cameron_jordan_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- cameron_jordan_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Cameron Jordan") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+marshal_yanda_av <- marshal_yanda %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(marshal_yanda_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- marshal_yanda_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Marshal Yanda") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+larry_grantham_av <- larry_grantham %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(larry_grantham_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- larry_grantham_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Larry Grantham") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+michael_vick_av <- michael_vick %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','6 yrs','5 yrs','1 yr','1 yr')))
+w <- c()
+for(i in seq_along(michael_vick_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- michael_vick_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Michael Vick") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+antonio_brown_av <- antonio_brown %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','2 yrs','1 yr')))
+w <- c()
+for(i in seq_along(antonio_brown_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- antonio_brown_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Antonio Brown") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+eric_dickerson_av <- eric_dickerson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','5 yrs','5 yrs','1 yr','1 yr'))) %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  filter(!(Year == ""))
+w <- c()
+for(i in seq_along(eric_dickerson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- eric_dickerson_av %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Eric Dickerson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+charlie_joiner_av <- charlie_joiner %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','11 yrs','4 yrs','4 yrs')),
+         !is.na(Year))
+w <- c()
+for(i in seq_along(charlie_joiner_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- charlie_joiner_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Charlie Joiner") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+bart_starr_av <- bart_starr %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','1956','1957','1958','1959')))
+w <- c()
+for(i in seq_along(bart_starr_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- bart_starr_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Bart Starr") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+larry_wilson_av <- larry_wilson %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(larry_wilson_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- larry_wilson_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Larry Wilson") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+steve_grogan_av <- steve_grogan %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(steve_grogan_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- steve_grogan_av %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Steve Grogan") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+tom_mack_av <- tom_mack %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(tom_mack_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- tom_mack_av %>%
+  mutate(Year = str_replace(Year,"\\*","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Tom Mack") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+john_abraham_av <- john_abraham %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','7 yrs','6 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(john_abraham_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- john_abraham_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "John Abraham") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+phil_simms_av <- phil_simms %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(phil_simms_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- phil_simms_av %>%
+  mutate(Year = str_replace(Year,"\\*","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Phil Simms") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+luke_kuechly_av <- luke_kuechly %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(luke_kuechly_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- luke_kuechly_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Luke Kuechly") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+james_harrison_av <- james_harrison %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','14 yrs','1 yr','1 yr')),
+         !is.na(Year))
+w <- c()
+for(i in seq_along(james_harrison_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- james_harrison_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "James Harrison") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+donnie_shell_av <- donnie_shell %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(donnie_shell_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- donnie_shell_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Donnie Shell") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+richard_seymour_av <- richard_seymour %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','8 yrs','4 yrs')))
+w <- c()
+for(i in seq_along(richard_seymour_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- richard_seymour_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Richard Seymour") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+cornelius_bennett_av <- cornelius_bennett %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','9 yrs','3 yrs','2 yrs')))
+w <- c()
+for(i in seq_along(cornelius_bennett_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- cornelius_bennett_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Cornelius Bennett") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+wes_welker_av <- wes_welker %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career','6 yrs','3 yrs','2 yrs','1 yr','1 yr')),
+         !is.na(Year))
+w <- c()
+for(i in seq_along(wes_welker_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- wes_welker_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Wes Welker") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV)
+roger_wehrli_av <- roger_wehrli %>%
+  select(Year,AV) %>%
+  filter(!(Year %in% c('Career')))
+w <- c()
+for(i in seq_along(roger_wehrli_av$AV)){
+  w[i] <- weight(i)
+}
+player_yearly_wAV <- roger_wehrli_av %>%
+  mutate(Year = str_replace(Year,"\\*",""),
+         Year = str_replace(Year, "\\+","")) %>%
+  arrange(desc(AV)) %>%
+  mutate(w = w,
+         wAV = AV*w) %>%
+  arrange(Year) %>%
+  select(-AV,-w) %>%
+  pivot_wider(names_from = Year,
+                values_from = wAV) %>%
+  mutate(Player = "Roger Wehrli") %>%
+  relocate(Player) %>%
+  bind_rows(player_yearly_wAV) %>%
+  select(sort(colnames(player_yearly_wAV))) %>% # Arrange columns in chronological order
+  relocate(Player) # Move player column to front of dataset
+```
+
+After joining the wAV dataset to the new college dataset and removing other unwanted ID variables, the new yearly wAV dataset can be joined to the resultant dataset by the Player ID variable. Before joining, the leaders dataset had 255 observations with 2 unique IDs (Player, wAV), while the college dataset had 107 observations with 5 unique IDs (Conference, Hall of Famers, Pro Bowl Selections, Top Players, Total wAV). After removing unnecessary ID variables, the resulting dataset had 255 observations with 1 unique ID (Conference), while the yearly wAV dataset had 255 observations of 62 unique IDs (1960-2021), with the datasets sharing the Player ID variable. Since both dataset had the same number of observations, none were dropped during joining.
+
+After joining, the new dataset was tidied to display a general year variable in place of individual year variables, and the yearly wAV value for each conference was calculated.
+
+```{r}
+# Create new object in environment
+wAV_years <- wAV_leaders %>%
+  select(-Rank,-Tm,-Years) %>% # Remove specific column variables
+  mutate(School = str_replace(School, "St\\.$", "State"), # Replace specific string with a different string 
+         School = str_replace(School, "Col\\.", "College"),
+         School = str_replace(School, "East\\.", "Eastern")) %>%
+  left_join(college_totals,by = "School") %>% # Apply left_join
+  relocate(Conference) %>% # Move conference variable to front of dataset
+  select(-School,-wAV,-`Hall of Famers`,-`Pro Bowl Selections`,-`Top Players`,-`Total wAV`) %>% # Remove specific column variables
+  left_join(player_yearly_wAV,by = "Player") %>% # Apply left_join
+  select(-Player) %>% # Remove player column variable
+  group_by(Conference) %>% # Create subsets by conference
+  summarize_all(sum,na.rm=TRUE) %>% # Add wAV values for each year
+  pivot_longer(cols = c(`1960`:`2021`), # columns in table4a to put as rows
+               names_to = "Year", # save 1999 and 2000 as a variable year
+               values_to = "wAV") # save the cell values as a variable population
+```
+
+## Visualizing
+
+```{r}
+# Join datasets together for ggplot visualization
+wAV_leaders %>%
+  mutate(School = str_replace(School, "St\\.$", "State"), # Replace specific string with a different string 
+         School = str_replace(School, "Col\\.", "College"),
+         School = str_replace(School, "East\\.", "Eastern")) %>%
+  left_join(ncaa_schools_adj,by="School") %>% # Apply left_join
+  ggplot(aes(y=Conference,fill=Conference)) + # Create ggplot based on conference
+  geom_bar() + # Create bar graph
+  scale_x_continuous(expand=c(0,0), # Remove space between data and axes
+                     limits=c(0,50)) + # Set x-axis to start at 0, end at 50
+  labs(x="Number of Top Players",title="Distribution of Conferences") + # Create labels
+  theme(legend.position="none") # Remove legend
+```
+
+This bar graph depicts the distribution of conferences among the 255 players in the wAV dataset. Through this graph, we can see that four conferences make up a significant portion of the players (ACC, SEC, Big Ten, Pac-12). All four of these conferences are part of the Power Five Conferences, so this distribution is expected.
+
+```{r}
+# Create ggplot based on wAV
+ggplot(wAV_leaders,aes(x=wAV,fill=..x..)) +
+  geom_histogram(binwidth = 2, center = 1) + # Create a histogram
+  scale_fill_gradient(low='blue', high='red') + # Set color gradient
+  labs(y="Frequency",title="Distribution of Players' wAV") + # Create labels
+  theme(legend.position="none") # Remove legend
+```
+
+This histogram shows the distribution of wAV values for the 255 players in the wAV dataset. A right-skewed distribution is observed and expected, as only the best of the best players can maintain a high level of performance over many years of professional sports.
+
+```{r}
+# Create ggplot based on Total wAV and Conference
+ggplot(college_totals, aes(y=Conference,x=`Total wAV`,fill=Conference)) +
+  geom_bar(stat="identity") +
+  labs(title="Conference wAV Totals") + # Create title label
+  theme(legend.position="none") +
+    scale_x_continuous(expand=c(0,0), # Remove space between data and axes
+                     limits=c(0,5500)) # Set x-axis to start at 0, end at 5500
+```
+
+This bar graph outlines the distribution of Total wAV for each conference. Four conferences appear to produce significantly more impactful players (ACC, SRC, Pac-12, Big Ten) than the remaining conferences, which is in line with what is to be expected.
+
+```{r}
+# Create ggplot based on Hall of Famers and Conference
+ggplot(college_totals, aes(y = Conference, x = `Hall of Famers`, fill = Conference)) +
+  geom_bar(stat="identity") +
+  labs(title = "Hall of Famers by Conference") + # Create title label
+  theme(legend.position="none") +
+  scale_x_continuous(expand=c(0,0), # Remove space between data and axes
+                     limits=c(0,60)) # Set x-axis to start at 0, end at 60
+```
+
+This bar graph depicts the distribution of players inducted into the Hall of Fame based on their college's conference. Like what we previously saw, there are a few conferences that stand out with producing legendary players (Big Ten, ACC, Pac-12, SEC) , with a few others more behind (Big 12, SWAC, FBS Independents).
+
+```{r}
+# Create ggplot based on Players aand Total wAV
+ggplot(college_totals, aes(x = Players, y = `Total wAV`)) +
+  geom_point(aes(color = Conference)) + # Color by conference
+  labs(x = "Players", y = "Total wAV",title="Players vs. Total wAV") # Create labels for axes and title
+```
+
+This scatter plot involves the number of NFL players each conference has historically produced and the total wAV from the top 255 players. An interesting trend is that producing NFL-level talent does not necessarily equate to long-term success in the NFL, as the FBS Independents conference has sent the most players to the NFL but is behind a few conferences in terms of its total wAV value.
+
+```{r}
+# Create function to return every 5th value
+my_breaks <- function(x, n = 5) {
+  return(x[c(TRUE, rep(FALSE, n - 1))])
+}
+ggplot(data=wAV_years,aes(x=Year,y=wAV,color=Conference,group=Conference)) + # Create ggplot based on year, wAV, and conference
+    geom_point() + # Show data as points
+  geom_line() + # Connect conference points with lines
+  scale_x_discrete(breaks = my_breaks) + # Set tick-marks
+  theme(legend.title=element_text(size=8), # Adjust legend sizes
+          legend.text=element_text(size=8),
+          legend.position="bottom") +
+  guides(colour=guide_legend(nrow=7)) + # Adjust number of rows in legend
+  labs(title="wAV of Conferences over Time",y='Total wAV') # Create title label
+```
+
+This plot depicts the yearly wAV total for each conference from 1960-2021. With this, we can observe the success players from a certain conference have as a collective during a given season. Naturally, the conferences with the greatest total wAV values year-by-year generally are the Power Five conferences (ACC, Big Ten, Big 12, SEC Pac-12). However, an interesting trend is that no one conference has constantly dominated the NFL with their successful players; rather, there are peaks of success at different time periods.
+
+## Acknowledgements
+
+Thank you to Phillip Kim for cleaning, tidying and joining datasets.
+
+Thank you to Srikar Sriram for creating visualizations and summary statistics.

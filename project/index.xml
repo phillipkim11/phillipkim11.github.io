@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects on Phillip Kim</title>
+    <link>/project/</link>
+    <description>Recent content in Projects on Phillip Kim</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Tue, 18 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="/project/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Success from NCAA to NFL</title>
+      <link>/project/project1/</link>
+      <pubDate>Tue, 18 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/project/project1/</guid>
+      <description>Introduction College football excites hundreds of thousands of people across America year by year, and many collegiate players dream of playing professionally in the NFL. Only a small percentage (1.6%) of college-level players fulfill that dream and get drafted into the NFL. Within this extremely selective process, certain universities and their respective conferences produce more NFL-bound athletes than others. However, does draft success equate to professional success? We are looking to investigate which NCAA conference produces the most successful players in the NFL.</description>
+    </item>
+    
+  </channel>
+</rss>
